@@ -34,7 +34,7 @@ export function ResultsView() {
   const criminalName = results.criminal_name ?? players.find((p) => p.id === results.criminal_id)?.display_name ?? 'Unknown';
   const accusedName = results.accused_name ?? players.find((p) => p.id === results.accused_id)?.display_name ?? 'Unknown';
   const fakeWriterName = results.fake_writer_name ?? players.find((p) => p.id === results.fake_writer_id)?.display_name;
-  const detectivesWin = results.winning_side === 'detectives';
+  const detectivesWin = results.criminal_id === results.accused_id;
 
   const handlePlayAgain = async () => {
     if (!session) return;

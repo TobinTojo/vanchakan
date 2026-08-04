@@ -240,11 +240,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
       .catch(() => setInterrogationRound(null));
   }, [session, room?.status, room?.current_round]);
 
-  // Restore role after refresh once past role reveal
+  // Restore role after refresh; always re-fetch on role reveal for a locked server assignment
   useEffect(() => {
-    if (!session || !room || myRole) return;
-    const pastRoleReveal = !['lobby', 'survey'].includes(room.status);
-    if (!pastRoleReveal) return;
+    if (!session || !room) return;
+    if (room.status === 'lobby' || room.status === 'survey') return;
+    if (room.status !== 'role_reveal' && myRole) return;
     getMyRole(session.playerId, session.sessionToken)
       .then((role) => setMyRole(role))
       .catch(() => {});
