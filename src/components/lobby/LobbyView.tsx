@@ -23,6 +23,7 @@ export function LobbyView() {
     try {
       await startGame(session.playerId, session.sessionToken);
     } catch (e) {
+      console.error('start_game failed:', e);
       setError(formatError(e));
     } finally {
       setLoading(false);
