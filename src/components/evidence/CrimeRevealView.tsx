@@ -18,12 +18,12 @@ export function CrimeRevealView() {
     setError(null);
     try {
       await advanceCrimeToEvidence(session.playerId, session.sessionToken);
-      await refreshRoom();
     } catch (e) {
       setError(formatError(e));
     } finally {
       setLoading(false);
     }
+    await refreshRoom();
   };
 
   return (

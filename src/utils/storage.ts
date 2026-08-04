@@ -67,7 +67,7 @@ export function formatError(error: unknown): string {
   if (text.includes('NOT_AUTHORIZED')) return 'Only the interrogator can end this round.';
   if (text.includes('CANNOT_INTERROGATE_SELF')) return 'You cannot interrogate yourself.';
   if (text.includes('INVALID_TARGET')) return 'Invalid player selected.';
-  if (text.includes('409') || text.includes('23505')) return 'Already submitted — waiting for others.';
+  if (text.includes('409') || text.includes('23505')) return 'Already advancing — loading evidence board...';
 
   if (text) return text;
   return 'Something went wrong. Please try again.';
