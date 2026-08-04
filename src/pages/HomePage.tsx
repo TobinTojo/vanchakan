@@ -4,6 +4,7 @@ import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { Input } from '@/components/common/Input';
 import { ErrorBanner } from '@/components/common/ErrorBanner';
+import { HowToPlayModal } from '@/components/common/HowToPlayModal';
 import { SiteLayout } from '@/components/layout/SiteLayout';
 import { ART } from '@/assets/art';
 import { createRoom, joinRoom } from '@/services/gameService';
@@ -86,7 +87,6 @@ export function HomePage() {
 
   return (
     <SiteLayout onHowToPlay={() => setShowHowToPlay(true)}>
-      {/* Hero */}
       <section className="page-container pb-8 pt-4 sm:pt-10">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="text-center lg:text-left">
@@ -133,7 +133,6 @@ export function HomePage() {
             </button>
           </div>
 
-          {/* Join form */}
           <div className="w-full max-w-md mx-auto lg:max-w-none lg:ml-auto">
             {error && (
               <div className="mb-4">
@@ -143,81 +142,64 @@ export function HomePage() {
 
             <Card glow className="shadow-glow">
               <h2 className="mb-1 text-lg font-semibold text-white">Get started</h2>
-              <p className="mb-5 text-sm text-vanchakan-muted">No account needed — just a name.</p>
+              <p className="mb-5 text-sm text-vanchakan-muted">
+                No account needed — pick a display name, then host or join.
+              </p>
 
-              <Input
-                label="Your Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Display name"
-                maxLength={20}
-                autoComplete="off"
-              />
-
-              <Button
-                onClick={handleCreate}
-                loading={loading === 'create'}
-                size="lg"
-                className="mt-4 w-full"
-              >
-                Create Room
-              </Button>
-
-              <div className="my-5 flex items-center gap-3">
-                <div className="h-px flex-1 bg-vanchakan-border" />
-                <span className="text-xs font-medium uppercase tracking-wider text-vanchakan-muted">
-                  or join
-                </span>
-                <div className="h-px flex-1 bg-vanchakan-border" />
+              <div className="rounded-xl border border-vanchakan-purple/20 bg-vanchakan-purple/5 p-4">
+                <Input
+                  label="Your display name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="How others will see you"
+                  maxLength={20}
+                  autoComplete="off"
+                />
+                <p className="mt-2 text-xs text-vanchakan-muted">
+                  Used for both creating and joining a room.
+                </p>
               </div>
 
-              <Input
-                label="Room Code"
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-                placeholder="ABC123"
-                maxLength={6}
-                className="font-mono tracking-widest uppercase"
-              />
-              <Button
-                onClick={handleJoin}
-                loading={loading === 'join'}
-                variant="secondary"
-                size="lg"
-                className="mt-4 w-full"
-              >
-                Join Room
-              </Button>
+              <div className="mt-5 space-y-4">
+                <div className="rounded-xl border border-vanchakan-border/80 bg-vanchakan-surface/40 p-4">
+                  <p className="mb-3 text-sm font-semibold text-white">Host a new game</p>
+                  <Button
+                    onClick={handleCreate}
+                    loading={loading === 'create'}
+                    size="lg"
+                    className="w-full"
+                  >
+                    Create Room
+                  </Button>
+                </div>
+
+                <div className="rounded-xl border border-vanchakan-border/80 bg-vanchakan-surface/40 p-4">
+                  <p className="mb-3 text-sm font-semibold text-white">Join with a code</p>
+                  <Input
+                    label="Room code"
+                    value={roomCode}
+                    onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                    placeholder="ABC123"
+                    maxLength={6}
+                    className="font-mono tracking-widest uppercase"
+                  />
+                  <Button
+                    onClick={handleJoin}
+                    loading={loading === 'join'}
+                    variant="secondary"
+                    size="lg"
+                    className="mt-4 w-full"
+                  >
+                    Join Room
+                  </Button>
+                </div>
+              </div>
             </Card>
           </div>
         </div>
       </section>
 
-      {showHowToPlay && (
-        <section className="page-container pb-12 animate-slide-up">
-          <Card>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">How to Play</h2>
-              <button
-                type="button"
-                onClick={() => setShowHowToPlay(false)}
-                className="text-vanchakan-muted hover:text-white"
-                aria-label="Close"
-              >
-                ✕
-              </button>
-            </div>
-            <ol className="list-decimal space-y-3 pl-5 text-sm leading-relaxed text-vanchakan-muted">
-              <li>3–8 players join a private room with a 6-character code</li>
-              <li>Everyone answers 8 survey questions — answers become evidence</li>
-              <li>One player is secretly the Vanchakan (criminal)</li>
-              <li>Study evidence, interrogate suspects, and use the lie detector</li>
-              <li>Vote on your top suspects and make a final accusation</li>
-              <li>Catch the Vanchakan before they escape!</li>
-            </ol>
-          </Card>
-        </section>
-      )}
+      <HowToPlayModal open={showHowToPlay} onClose={() => setShowHowToPlay(false)} />
     </SiteLayout>
   );
 }
