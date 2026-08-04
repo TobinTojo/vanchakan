@@ -9,7 +9,7 @@ import { advanceCrimeToEvidence } from '@/services/gameService';
 const CRIME_REVEAL_SECONDS = 6;
 
 export function CrimeRevealView() {
-  const { session, crime, room } = useGame();
+  const { session, crime, room, refreshRoom } = useGame();
   const { remaining, progress } = useSyncedGameTimer(CRIME_REVEAL_SECONDS, false);
   const advancingRef = useRef(false);
 
@@ -20,6 +20,7 @@ export function CrimeRevealView() {
       if (advancingRef.current) return;
       advancingRef.current = true;
       advanceCrimeToEvidence(session.playerId, session.sessionToken)
+        .then(() => refreshRoom())
         .catch(() => {})
         .finally(() => {
           advancingRef.current = false;
@@ -31,7 +32,7 @@ export function CrimeRevealView() {
       const interval = setInterval(tryAdvance, 2000);
       return () => clearInterval(interval);
     }
-  }, [remaining, session, room?.status]);
+  }, [remaining, session, room?.status, refreshRoom]);
 
   return (
     <div className="mx-auto max-w-lg animate-fade-in">

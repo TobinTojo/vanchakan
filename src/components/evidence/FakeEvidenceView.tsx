@@ -8,17 +8,20 @@ import { advanceCrimeToEvidence } from '@/services/gameService';
 
 /** Recovery screen if room is stuck in fake_evidence status */
 export function FakeEvidenceView() {
-  const { session } = useGame();
+  const { session, refreshRoom } = useGame();
   const { progress } = useSyncedGameTimer(3, false);
 
   useEffect(() => {
     if (!session) return;
-    advanceCrimeToEvidence(session.playerId, session.sessionToken).catch(() => {});
-    const interval = setInterval(() => {
-      advanceCrimeToEvidence(session.playerId, session.sessionToken).catch(() => {});
-    }, 2000);
+    const tryAdvance = () =>
+      advanceCrimeToEvidence(session.playerId, session.sessionToken)
+        .then(() => refreshRoom())
+        .catch(() => {});
+
+    tryAdvance();
+    const interval = setInterval(tryAdvance, 2000);
     return () => clearInterval(interval);
-  }, [session]);
+  }, [session, refreshRoom]);
 
   return (
     <div className="mx-auto max-w-lg animate-fade-in">
