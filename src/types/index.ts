@@ -79,6 +79,10 @@ export interface Evidence {
   room_id: string;
   evidence_order: number;
   evidence_text: string;
+  question_id?: string | null;
+  answer_text?: string | null;
+  matching_count?: number;
+  total_players?: number;
   is_inspected: boolean;
   inspection_result: string | null;
   created_at: string;
@@ -95,7 +99,8 @@ export interface InterrogationRound {
   room_id: string;
   round_number: number;
   evidence_id: string;
-  suspect_player_id: string;
+  interrogator_player_id: string | null;
+  suspect_player_id: string | null;
   suspect_response: string | null;
   started_at: string | null;
   ends_at: string | null;

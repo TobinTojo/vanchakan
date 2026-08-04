@@ -228,6 +228,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
   }, [session, room?.status]);
 
+  // Load current interrogation round when round number changes
+  useEffect(() => {
+    if (!session || !room || room.status !== 'interrogation' || room.current_round <= 0) {
+      if (room?.status !== 'interrogation') setInterrogationRound(null);
+      return;
+    }
+    fetchInterrogationRound(session.roomId, room.current_round)
+      .then((ir) => setInterrogationRound(ir as InterrogationRound))
+      .catch(() => setInterrogationRound(null));
+  }, [session, room?.status, room?.current_round]);
+
   const me = players.find((p) => p.id === session?.playerId) ?? null;
   const isHost = me?.is_host ?? false;
 

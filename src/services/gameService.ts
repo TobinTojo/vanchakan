@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import type {
   AnswerCount,
+  Evidence,
   FakeEvidenceTask,
   GameResultsData,
   LieDetectorAction,
@@ -302,13 +303,22 @@ export async function fetchCurrentGameQuestion(roomId: string, questionIndex: nu
 }
 
 export async function fetchEvidence(roomId: string) {
-  const { data, error } = await supabase
-    .from('evidence')
-    .select('id, room_id, evidence_order, evidence_text, is_inspected, inspection_result, created_at')
-    .eq('room_id', roomId)
-    .order('evidence_order');
+  const { data, error } = await supabase.rpc('get_evidence_with_stats', { p_room_id: roomId });
   if (error) throw error;
-  return data;
+  return (data ?? []) as Evidence[];
+}
+
+export async function selectInterrogationTarget(
+  playerId: string,
+  sessionToken: string,
+  targetPlayerId: string
+) {
+  const { error } = await supabase.rpc('select_interrogation_target', {
+    p_player_id: playerId,
+    p_session_token: sessionToken,
+    p_target_player_id: targetPlayerId,
+  });
+  if (error && !isRpcConflict(error)) throw error;
 }
 
 export async function fetchCrime(crimeId: string) {
