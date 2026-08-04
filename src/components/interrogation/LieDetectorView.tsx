@@ -3,6 +3,7 @@ import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
+import { PlayerList } from '@/components/common/PlayerList';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { EvidenceCard, cleanQuestionText } from '@/components/evidence/EvidenceCard';
 import { useGame } from '@/context/GameContext';
@@ -25,6 +26,7 @@ export function LieDetectorView() {
   const { session, room, players } = useGame();
   const [state, setState] = useState<LieDetectorState | null>(null);
   const [selectedEvidenceId, setSelectedEvidenceId] = useState<string | null>(null);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [submittedEvidence, setSubmittedEvidence] = useState(false);
   const [submittedPlayer, setSubmittedPlayer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,13 +74,13 @@ export function LieDetectorView() {
   };
 
   const handlePlayerVote = async () => {
-    if (!session || !state?.attached_player) return;
+    if (!session || !selectedPlayerId || !state?.selected_evidence) return;
     setLoading(true);
     setError(null);
     try {
       await submitLieDetectorVote(session.playerId, session.sessionToken, 'check_answer', {
-        playerId: state.attached_player.id,
-        questionId: state.attached_player.question_id,
+        playerId: selectedPlayerId,
+        questionId: state.selected_evidence.question_id,
       });
       setSubmittedPlayer(true);
     } catch (e) {
@@ -118,7 +120,7 @@ export function LieDetectorView() {
             Evidence #{state.evidence_result.evidence_order}: {state.evidence_result.inspection_result}
           </p>
         </Card>
-        <GameTimer remaining={remaining} total={12} label="Checking player answer in" />
+        <GameTimer remaining={remaining} total={12} label="Vote on a player in" />
       </div>
     );
   }
@@ -184,9 +186,9 @@ export function LieDetectorView() {
         <PhaseHeader
           phase="Lie Detector"
           title="Vote Submitted"
-          subtitle="Waiting to check the attached player's answer..."
+          subtitle="Waiting for everyone to pick a player..."
         />
-        <WaitingScreen message="Almost there — revealing the answer next." />
+        <WaitingScreen message="The group is voting on who they think gave that answer." />
       </div>
     );
   }
@@ -241,42 +243,54 @@ export function LieDetectorView() {
     );
   }
 
-  if (votePhase === 'player' && state.attached_player) {
-    const attached = players.find((p) => p.id === state.attached_player?.id);
+  if (votePhase === 'player' && state.selected_evidence) {
+    const selected = state.selected_evidence;
+    const evidenceCard: Evidence = {
+      id: selected.evidence_id,
+      room_id: room.id,
+      evidence_order: selected.evidence_order,
+      evidence_text: '',
+      question_id: selected.question_id,
+      question_text: selected.question_text,
+      answer_text: selected.answer_text,
+      is_inspected: true,
+      inspection_result: selected.inspection_result,
+      created_at: '',
+    };
 
     return (
       <div className="mx-auto max-w-xl animate-fade-in">
         <PhaseHeader
           phase="Lie Detector"
-          title="Vote: Check Player Answer"
-          subtitle="Confirm checking the player attached to the chosen evidence"
+          title="Vote: Who Gave This Answer?"
+          subtitle="Pick the player you think is linked to this evidence"
         />
 
-        {state.evidence_result && (
-          <div className="mb-6">
-            <Card className="text-center">
-              <p className="text-xs font-semibold uppercase text-vanchakan-gold">Selected Evidence</p>
-              <p className="mt-1 text-lg font-semibold text-white">
-                Evidence #{state.evidence_result.evidence_order}:{' '}
-                {state.evidence_result.inspection_result}
-              </p>
-            </Card>
-          </div>
-        )}
+        <div className="mb-6">
+          <EvidenceCard evidence={evidenceCard} showMatchCount={false} />
+        </div>
 
         <Card>
           <p className="mb-4 text-sm text-vanchakan-muted">
-            The player attached to this evidence card is{' '}
-            <strong className="text-white">{attached?.display_name ?? state.attached_player.name}</strong>.
-            Everyone must vote to reveal their survey answer for this question.
+            The evidence above shows an answer from the survey. Vote for the player you think gave
+            that answer — the group's choice will be checked against their real response.
           </p>
-          {state.attached_player.question_text && (
-            <p className="mb-4 rounded-lg border border-vanchakan-border bg-vanchakan-surface p-3 text-sm text-white/90">
-              {cleanQuestionText(state.attached_player.question_text)}
-            </p>
-          )}
-          <Button onClick={handlePlayerVote} loading={loading} className="w-full">
-            Vote to Reveal {attached?.display_name ?? state.attached_player.name}'s Answer
+          <PlayerList
+            players={players}
+            currentPlayerId={session?.playerId}
+            selectable
+            selectedIds={selectedPlayerId ? [selectedPlayerId] : []}
+            onSelect={setSelectedPlayerId}
+            excludeIds={session ? [session.playerId] : []}
+            maxSelections={1}
+          />
+          <Button
+            onClick={handlePlayerVote}
+            disabled={!selectedPlayerId}
+            loading={loading}
+            className="mt-4 w-full"
+          >
+            Submit Vote
           </Button>
         </Card>
 

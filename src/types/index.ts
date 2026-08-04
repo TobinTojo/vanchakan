@@ -215,11 +215,13 @@ export interface LieDetectorResult {
   target_player_id?: string | null;
 }
 
-export interface LieDetectorAttachedPlayer {
-  id: string;
-  name: string;
+export interface LieDetectorSelectedEvidence {
+  evidence_id: string;
+  evidence_order: number;
   question_id: string;
   question_text: string;
+  answer_text: string;
+  inspection_result: string;
 }
 
 export interface LieDetectorState {
@@ -229,5 +231,5 @@ export interface LieDetectorState {
   evidence_options: Evidence[];
   evidence_result: LieDetectorResult | null;
   player_result: LieDetectorResult | null;
-  attached_player: LieDetectorAttachedPlayer | null;
+  selected_evidence: LieDetectorSelectedEvidence | null;
 }
