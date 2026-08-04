@@ -25,6 +25,7 @@ import {
   fetchCrime,
   fetchInterrogationRound,
   reconnectPlayer,
+  fetchServerTimeOffset,
 } from '@/services/gameService';
 import { getSession, saveSession, clearSession } from '@/utils/storage';
 
@@ -44,6 +45,7 @@ interface GameContextValue {
   clearGame: () => void;
   isHost: boolean;
   me: Player | null;
+  serverOffsetMs: number;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -58,6 +60,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [myRole, setMyRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(() => !!getSession());
   const [error, setError] = useState<string | null>(null);
+  const [serverOffsetMs, setServerOffsetMs] = useState(0);
   const reconnectAttempted = useRef(false);
 
   const setSession = useCallback((s: SessionData) => {
@@ -190,7 +193,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
   }, [session]);
 
-  // Heartbeat and game tick
+  // Sync server clock when phase timer changes
+  useEffect(() => {
+    if (!room?.phase_ends_at) return;
+    fetchServerTimeOffset().then(setServerOffsetMs).catch(() => setServerOffsetMs(0));
+  }, [room?.phase_ends_at, room?.status]);
+
+  // Heartbeat and game tick (backup poll every 2s)
   useEffect(() => {
     if (!session) return;
 
@@ -201,7 +210,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       } catch {
         // silent
       }
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [session]);
@@ -241,6 +250,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
         clearGame,
         isHost,
         me,
+        serverOffsetMs,
       }}
     >
       {children}

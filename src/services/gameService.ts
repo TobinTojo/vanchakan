@@ -230,6 +230,15 @@ export async function getLieDetectorAnswer(roomId: string, eventNumber: number):
   return data as LieDetectorAnswerReveal | null;
 }
 
+export async function fetchServerTimeOffset(): Promise<number> {
+  const t0 = Date.now();
+  const { data, error } = await supabase.rpc('get_server_time');
+  const t1 = Date.now();
+  if (error || !data) return 0;
+  const serverMs = new Date(data as string).getTime();
+  return serverMs - (t0 + t1) / 2;
+}
+
 export async function fetchRoom(roomId: string) {
   const { data, error } = await supabase.from('rooms').select('*').eq('id', roomId).single();
   if (error) throw error;

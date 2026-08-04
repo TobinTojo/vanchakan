@@ -5,7 +5,7 @@ import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { useGame } from '@/context/GameContext';
-import { useGameTimer } from '@/hooks/useGameTimer';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { getFakeEvidenceTask, submitFakeEvidence } from '@/services/gameService';
 import { formatError } from '@/utils/storage';
 import type { FakeEvidenceTask } from '@/types';
@@ -19,7 +19,7 @@ export function FakeEvidenceView() {
   const [error, setError] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
 
-  const remaining = useGameTimer(room?.phase_ends_at ?? null);
+  const { remaining } = useSyncedGameTimer(30);
 
   useEffect(() => {
     if (!session) return;
@@ -32,10 +32,16 @@ export function FakeEvidenceView() {
   const handleSubmit = async () => {
     if (!session || !answer.trim()) return;
     setLoading(true);
+    setError(null);
     try {
       await submitFakeEvidence(session.playerId, session.sessionToken, answer);
       setSubmitted(true);
     } catch (e) {
+      // If phase already advanced, treat as success
+      if (room?.status === 'evidence') {
+        setSubmitted(true);
+        return;
+      }
       setError(formatError(e));
     } finally {
       setLoading(false);

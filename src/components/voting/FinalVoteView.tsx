@@ -5,7 +5,7 @@ import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { PlayerList } from '@/components/common/PlayerList';
 import { useGame } from '@/context/GameContext';
-import { useGameTimer } from '@/hooks/useGameTimer';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { submitFinalVote, hasSubmittedFinalVote, getSuspectVoteResults } from '@/services/gameService';
 import { formatError } from '@/utils/storage';
 import type { SuspectVoteResult } from '@/types';
@@ -19,7 +19,7 @@ export function FinalVoteView() {
   const [error, setError] = useState<string | null>(null);
 
   const isTieBreaker = room?.status === 'tie_breaker';
-  const remaining = useGameTimer(room?.phase_ends_at ?? null);
+  const { remaining } = useSyncedGameTimer(isTieBreaker ? 20 : 30);
 
   useEffect(() => {
     if (!session || !room) return;

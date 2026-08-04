@@ -5,7 +5,7 @@ import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { useGame } from '@/context/GameContext';
-import { useGameTimer } from '@/hooks/useGameTimer';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import {
   fetchCurrentGameQuestion,
   submitAnswer,
@@ -25,7 +25,7 @@ export function SurveyView() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const remaining = useGameTimer(room?.phase_ends_at ?? null);
+  const { remaining } = useSyncedGameTimer(30);
 
   useEffect(() => {
     if (!session || !room) return;

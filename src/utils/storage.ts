@@ -49,6 +49,10 @@ export function copyToClipboard(text: string): Promise<void> {
 }
 
 export function formatError(error: unknown): string {
+  if (error && typeof error === 'object' && 'code' in error) {
+    const code = String((error as { code?: string }).code);
+    if (code === '23505') return 'Already submitted — waiting for others.';
+  }
   if (error instanceof Error) {
     const msg = error.message;
     if (msg.includes('ROOM_NOT_FOUND')) return 'Room not found. Check the code and try again.';
@@ -60,6 +64,7 @@ export function formatError(error: unknown): string {
     if (msg.includes('NOT_ENOUGH_PLAYERS')) return 'Need at least 3 players to start.';
     if (msg.includes('TIME_EXPIRED')) return 'Time expired for this question.';
     if (msg.includes('INVALID_VOTE')) return 'Invalid vote selection.';
+    if (msg.includes('409') || msg.includes('23505')) return 'Already submitted — waiting for others.';
     return msg;
   }
   return 'Something went wrong. Please try again.';

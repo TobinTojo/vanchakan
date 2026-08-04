@@ -4,7 +4,7 @@ import { Card } from '@/components/common/Card';
 import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { useGame } from '@/context/GameContext';
-import { useGameTimer } from '@/hooks/useGameTimer';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { submitInterrogationResponse, nextInterrogationRound } from '@/services/gameService';
 import { formatError } from '@/utils/storage';
 
@@ -14,7 +14,7 @@ export function InterrogationView() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const remaining = useGameTimer(room?.phase_ends_at ?? null);
+  const { remaining } = useSyncedGameTimer(60);
 
   if (!interrogationRound || !room) return null;
 

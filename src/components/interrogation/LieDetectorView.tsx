@@ -5,7 +5,7 @@ import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { PlayerList } from '@/components/common/PlayerList';
 import { useGame } from '@/context/GameContext';
-import { useGameTimer } from '@/hooks/useGameTimer';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import {
   submitLieDetectorVote,
   hasSubmittedLieDetectorVote,
@@ -27,7 +27,7 @@ export function LieDetectorView() {
   const [error, setError] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Array<{ id: string; question_text: string }>>([]);
 
-  const remaining = useGameTimer(room?.phase_ends_at ?? null);
+  const { remaining } = useSyncedGameTimer(30);
 
   useEffect(() => {
     if (!session || !room) return;
