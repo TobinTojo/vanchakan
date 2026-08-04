@@ -7,8 +7,32 @@ import { ART } from '@/assets/art';
 import { useGame } from '@/context/GameContext';
 import { getGameResults, playAgain, leaveRoom } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
-import type { GameResultsData } from '@/types';
+import type { GameResultsData, GameResultsPlayer } from '@/types';
 import { cn } from '@/utils/storage';
+
+const ROLE_ROSTER: Record<
+  GameResultsPlayer['role'],
+  { label: string; image: string; badge: string; accent: string }
+> = {
+  criminal: {
+    label: 'Vanchakan',
+    image: ART.roleVanchakan,
+    badge: 'border-vanchakan-red/50 bg-vanchakan-red/15 text-vanchakan-red',
+    accent: 'text-vanchakan-red',
+  },
+  innocent: {
+    label: 'Innocent',
+    image: ART.roleInnocent,
+    badge: 'border-vanchakan-gold/50 bg-vanchakan-gold/15 text-vanchakan-gold',
+    accent: 'text-vanchakan-gold',
+  },
+  jester: {
+    label: 'Jester',
+    image: ART.roleJester,
+    badge: 'border-vanchakan-purple/50 bg-vanchakan-purple/15 text-vanchakan-purple-light',
+    accent: 'text-vanchakan-purple-light',
+  },
+};
 
 export function ResultsView() {
   const { session, players, isHost, clearGame } = useGame();
@@ -33,7 +57,6 @@ export function ResultsView() {
 
   const criminalName = results.criminal_name ?? players.find((p) => p.id === results.criminal_id)?.display_name ?? 'Unknown';
   const accusedName = results.accused_name ?? players.find((p) => p.id === results.accused_id)?.display_name ?? 'Unknown';
-  const jesterName = results.jester_name ?? players.find((p) => p.id === results.jester_id)?.display_name;
   const fakeWriterName = results.fake_writer_name ?? players.find((p) => p.id === results.fake_writer_id)?.display_name;
 
   const jesterWins = results.winning_side === 'jester';
@@ -115,15 +138,46 @@ export function ResultsView() {
         </div>
       </Card>
 
-      {jesterName && (
-        <Card className="mb-6 text-center">
-          <p className="text-sm text-vanchakan-muted">
-            The Jester was{' '}
-            <strong className="text-vanchakan-purple-light">{jesterName}</strong>
-            {jesterWins ? ' — mission accomplished.' : '.'}
-          </p>
-        </Card>
-      )}
+      <Card className="mb-6">
+        <h3 className="mb-4 font-semibold text-vanchakan-gold">Player Roles</h3>
+        <ul className="space-y-2">
+          {(results.players ?? []).map((entry) => {
+            const info = ROLE_ROSTER[entry.role];
+            const isAccused = entry.id === results.accused_id;
+            return (
+              <li
+                key={entry.id}
+                className={cn(
+                  'flex items-center gap-3 rounded-lg border px-4 py-3',
+                  isAccused ? 'border-vanchakan-gold/50 bg-vanchakan-gold/5' : 'border-vanchakan-border bg-vanchakan-surface'
+                )}
+              >
+                <img
+                  src={info.image}
+                  alt=""
+                  className="h-10 w-10 shrink-0 rounded-lg object-cover ring-1 ring-white/10"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-white">
+                    {entry.name}
+                    {isAccused && (
+                      <span className="ml-2 text-xs font-normal text-vanchakan-muted">(accused)</span>
+                    )}
+                  </p>
+                </div>
+                <span
+                  className={cn(
+                    'shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-semibold',
+                    info.badge
+                  )}
+                >
+                  {info.label}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </Card>
 
       <Card className="mb-6">
         <h3 className="font-semibold text-vanchakan-gold mb-4">Evidence Summary</h3>

@@ -159,6 +159,12 @@ export interface SessionData {
   roomCode: string;
 }
 
+export interface GameResultsPlayer {
+  id: string;
+  name: string;
+  role: 'criminal' | 'innocent' | 'jester';
+}
+
 export interface GameResultsData {
   criminal_id: string;
   criminal_name?: string;
@@ -169,6 +175,7 @@ export interface GameResultsData {
   jester_id?: string | null;
   jester_name?: string | null;
   winning_side: 'detectives' | 'criminal' | 'jester';
+  players: GameResultsPlayer[];
   evidence: Array<{
     order: number;
     text: string;
