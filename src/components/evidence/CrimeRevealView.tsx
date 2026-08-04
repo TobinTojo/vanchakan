@@ -20,7 +20,7 @@ export function CrimeRevealView() {
           {crime?.crime_text ?? 'Investigating the scene...'}
         </p>
         <p className="mt-4 text-sm text-vanchakan-muted">
-          Evidence is being collected from witness statements...
+          Compiling witness statements into evidence cards...
         </p>
       </Card>
 
