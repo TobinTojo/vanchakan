@@ -154,8 +154,11 @@ export interface SessionData {
 
 export interface GameResultsData {
   criminal_id: string;
+  criminal_name?: string;
   accused_id: string;
+  accused_name?: string;
   fake_writer_id: string;
+  fake_writer_name?: string;
   winning_side: 'detectives' | 'criminal';
   evidence: Array<{
     order: number;
@@ -198,6 +201,7 @@ export interface LieDetectorResult {
   player_name?: string | null;
   question_text?: string | null;
   answer_text?: string | null;
+  answer_verdict?: 'honest' | 'dishonest' | null;
   inspection_result?: string | null;
   evidence_order?: number | null;
 }

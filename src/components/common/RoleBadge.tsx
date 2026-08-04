@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/common/Button';
+import { Card } from '@/components/common/Card';
+import { ART } from '@/assets/art';
 import { useGame } from '@/context/GameContext';
 import { cn } from '@/utils/storage';
 
@@ -14,24 +18,114 @@ const PHASES_WITH_ROLE = new Set([
   'finished',
 ]);
 
+const ROLE_INFO = {
+  criminal: {
+    label: 'Vanchakan',
+    image: ART.roleVanchakan,
+    title: 'You are the Vanchakan',
+    summary: 'You committed the crime. Convince everyone the evidence does not point to you.',
+    tips: [
+      'Your survey answers appear as genuine evidence on the board.',
+      'One innocent player\'s answer was planted as fake evidence — it is not yours.',
+      'Defend yourself during interrogation without giving yourself away.',
+      'Survive the final vote to win.',
+    ],
+    accent: 'text-vanchakan-red',
+    border: 'border-vanchakan-red/50 bg-vanchakan-red/15 text-vanchakan-red',
+  },
+  innocent: {
+    label: 'Innocent',
+    image: ART.roleInnocent,
+    title: 'You are innocent',
+    summary: 'Study the evidence, question suspects, and identify the Vanchakan.',
+    tips: [
+      'Real evidence matches the criminal\'s survey answers.',
+      'Fake evidence is a red herring from another innocent player.',
+      'Use interrogation and the lie detector to spot dishonest answers.',
+      'Vote correctly in the final round to win.',
+    ],
+    accent: 'text-vanchakan-gold',
+    border: 'border-vanchakan-gold/50 bg-vanchakan-gold/15 text-vanchakan-gold',
+  },
+} as const;
+
 export function RoleBadge() {
   const { room, myRole } = useGame();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open]);
 
   if (!myRole || !room || !PHASES_WITH_ROLE.has(room.status)) return null;
+  if (myRole !== 'criminal' && myRole !== 'innocent') return null;
 
-  const isCriminal = myRole === 'criminal';
+  const info = ROLE_INFO[myRole];
 
   return (
-    <div
-      className={cn(
-        'flex shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold sm:gap-1.5 sm:px-2.5 sm:text-xs',
-        isCriminal
-          ? 'border-vanchakan-red/50 bg-vanchakan-red/15 text-vanchakan-red'
-          : 'border-vanchakan-gold/50 bg-vanchakan-gold/15 text-vanchakan-gold'
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className={cn(
+          'flex shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold transition hover:brightness-110 sm:gap-1.5 sm:px-2.5 sm:text-xs',
+          info.border
+        )}
+        aria-label={`Your role: ${info.label}. Click for details.`}
+      >
+        <img
+          src={info.image}
+          alt=""
+          className="h-5 w-5 shrink-0 rounded-full object-cover ring-1 ring-white/20 sm:h-6 sm:w-6"
+        />
+        <span className="leading-none">{info.label}</span>
+      </button>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+          role="presentation"
+        >
+          <div
+            className="w-full max-w-md animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="role-popup-title"
+          >
+            <Card glow className="text-center">
+              <img
+                src={info.image}
+                alt=""
+                className="mx-auto mb-4 h-28 w-28 rounded-2xl object-cover ring-2 ring-white/10"
+              />
+              <h2 id="role-popup-title" className={cn('mb-2 text-2xl font-bold', info.accent)}>
+                {info.title}
+              </h2>
+              <p className="mb-5 text-sm leading-relaxed text-vanchakan-muted">{info.summary}</p>
+              <ul className="mb-6 space-y-2 text-left text-sm text-white/90">
+                {info.tips.map((tip) => (
+                  <li key={tip} className="flex gap-2">
+                    <span className="shrink-0 text-vanchakan-purple-light">•</span>
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button onClick={() => setOpen(false)} className="w-full">
+                Got it
+              </Button>
+            </Card>
+          </div>
+        </div>
       )}
-    >
-      <span className="leading-none">{isCriminal ? '🎭' : '🔍'}</span>
-      <span className="leading-none">{isCriminal ? 'Vanchakan' : 'Innocent'}</span>
-    </div>
+    </>
   );
 }

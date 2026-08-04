@@ -3,6 +3,7 @@ import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { cleanQuestionText } from '@/components/evidence/EvidenceCard';
+import { ART } from '@/assets/art';
 import { useGame } from '@/context/GameContext';
 import { getGameResults, playAgain, leaveRoom } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
@@ -30,9 +31,9 @@ export function ResultsView() {
     );
   }
 
-  const criminal = players.find((p) => p.id === results.criminal_id);
-  const accused = players.find((p) => p.id === results.accused_id);
-  const fakeWriter = players.find((p) => p.id === results.fake_writer_id);
+  const criminalName = results.criminal_name ?? players.find((p) => p.id === results.criminal_id)?.display_name ?? 'Unknown';
+  const accusedName = results.accused_name ?? players.find((p) => p.id === results.accused_id)?.display_name ?? 'Unknown';
+  const fakeWriterName = results.fake_writer_name ?? players.find((p) => p.id === results.fake_writer_id)?.display_name;
   const detectivesWin = results.winning_side === 'detectives';
 
   const handlePlayAgain = async () => {
@@ -65,15 +66,28 @@ export function ResultsView() {
       />
 
       <Card glow className="mb-6 text-center animate-reveal">
-        <div className="text-6xl mb-4">{detectivesWin ? '🎉' : '😈'}</div>
-        <p className="text-xl text-white mb-2">
-          The Vanchakan was <strong className="text-vanchakan-red">{criminal?.display_name}</strong>
-        </p>
-        <p className="text-vanchakan-muted">
-          {detectivesWin
-            ? `${accused?.display_name} was correctly accused.`
-            : `${accused?.display_name} was wrongly accused.`}
-        </p>
+        <div className="mb-4 flex justify-center">
+          <img
+            src={detectivesWin ? ART.win : ART.loss}
+            alt=""
+            className="h-32 w-32 rounded-2xl object-cover ring-2 ring-white/10 sm:h-36 sm:w-36"
+          />
+        </div>
+        <div className="space-y-3">
+          <p className="text-lg text-white">
+            The group voted to accuse{' '}
+            <strong className="text-vanchakan-gold">{accusedName}</strong>
+          </p>
+          <p className="text-xl text-white">
+            The real Vanchakan was{' '}
+            <strong className="text-vanchakan-red">{criminalName}</strong>
+          </p>
+          <p className="text-vanchakan-muted">
+            {detectivesWin
+              ? 'The detectives caught the Vanchakan — you win!'
+              : 'The Vanchakan escaped justice — the criminal wins!'}
+          </p>
+        </div>
       </Card>
 
       <Card className="mb-6">
@@ -113,10 +127,10 @@ export function ResultsView() {
             );
           })}
         </div>
-        {fakeWriter && (
+        {fakeWriterName && (
           <p className="mt-4 text-sm text-vanchakan-muted">
             Fake clue source:{' '}
-            <strong className="text-white">{fakeWriter.display_name}</strong> — an innocent
+            <strong className="text-white">{fakeWriterName}</strong> — an innocent
             player's survey answer was used as the planted red herring (not the criminal).
           </p>
         )}

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
+import { ART } from '@/assets/art';
 import { useGame } from '@/context/GameContext';
 import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { getMyRole, advanceRoleRevealNow } from '@/services/gameService';
@@ -54,8 +55,12 @@ export function RoleRevealView() {
       <Card glow className="text-center animate-reveal py-8 sm:py-10">
         {myRole ? (
           <>
-            <div className={`mb-6 text-7xl sm:text-8xl ${isCriminal ? 'text-vanchakan-red' : 'text-vanchakan-gold'}`}>
-              {isCriminal ? '🎭' : '🔍'}
+            <div className="mb-6 flex justify-center">
+              <img
+                src={isCriminal ? ART.roleVanchakan : ART.roleInnocent}
+                alt=""
+                className="h-36 w-36 rounded-2xl object-cover ring-2 ring-white/10 sm:h-44 sm:w-44"
+              />
             </div>
             <h2 className={`mb-4 text-3xl font-bold sm:text-4xl ${isCriminal ? 'text-vanchakan-red' : 'text-vanchakan-gold'}`}>
               {isCriminal ? 'You are the Vanchakan' : 'You are innocent'}

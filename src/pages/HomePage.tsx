@@ -5,6 +5,7 @@ import { Card } from '@/components/common/Card';
 import { Input } from '@/components/common/Input';
 import { ErrorBanner } from '@/components/common/ErrorBanner';
 import { SiteLayout } from '@/components/layout/SiteLayout';
+import { ART } from '@/assets/art';
 import { createRoom, joinRoom } from '@/services/gameService';
 import { useGame } from '@/context/GameContext';
 import { formatError } from '@/utils/storage';
@@ -89,6 +90,14 @@ export function HomePage() {
       <section className="page-container pb-8 pt-4 sm:pt-10">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="text-center lg:text-left">
+            <div className="relative mx-auto mb-6 max-w-xl overflow-hidden rounded-2xl border border-vanchakan-purple/25 shadow-glow lg:mx-0">
+              <img
+                src={ART.hero}
+                alt=""
+                className="aspect-[16/9] w-full object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-vanchakan-bg/80 via-transparent to-transparent" />
+            </div>
             <p className="mb-3 inline-block rounded-full border border-vanchakan-purple/30 bg-vanchakan-purple/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-vanchakan-purple-light">
               Multiplayer social deduction
             </p>

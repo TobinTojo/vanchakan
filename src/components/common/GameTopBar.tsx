@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ART } from '@/assets/art';
 import { RoleBadge } from '@/components/common/RoleBadge';
 import { SoundToggle } from '@/components/common/SoundToggle';
 
@@ -9,10 +10,10 @@ export function GameTopBar() {
         <div className="flex min-w-0 items-center gap-2">
           <Link
             to="/"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-vanchakan-purple/15 text-sm"
+            className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg ring-1 ring-vanchakan-purple/30"
             aria-label="Home"
           >
-            🎭
+            <img src={ART.logo} alt="" className="h-full w-full object-cover" />
           </Link>
           <RoleBadge />
         </div>

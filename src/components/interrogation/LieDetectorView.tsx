@@ -13,7 +13,7 @@ import {
   fetchGameQuestions,
   getLieDetectorResult,
 } from '@/services/gameService';
-import { formatError } from '@/utils/storage';
+import { formatError, cn } from '@/utils/storage';
 import type { LieDetectorAction, LieDetectorResult } from '@/types';
 
 type Step = 'action' | 'evidence' | 'player' | 'question';
@@ -87,6 +87,25 @@ export function LieDetectorView() {
                 {result.question_text ? cleanQuestionText(result.question_text) : 'Survey question'}
               </p>
               <p className="text-lg font-semibold text-vanchakan-gold">"{result.answer_text}"</p>
+              {result.answer_verdict && (
+                <div className="pt-2">
+                  <span
+                    className={cn(
+                      'inline-flex rounded-full border px-4 py-1.5 text-sm font-semibold text-white',
+                      result.answer_verdict === 'dishonest'
+                        ? 'border-red-500/60 bg-red-500/20'
+                        : 'border-green-500/60 bg-green-500/20'
+                    )}
+                  >
+                    {result.answer_verdict === 'dishonest' ? 'Dishonest' : 'Honest'}
+                  </span>
+                  <p className="mt-2 text-xs text-vanchakan-muted">
+                    {result.answer_verdict === 'dishonest'
+                      ? 'Matches the criminal\'s answer — suspicious.'
+                      : 'Does not match the criminal\'s answer.'}
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-2">

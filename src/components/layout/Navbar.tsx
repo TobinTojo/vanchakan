@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ART } from '@/assets/art';
 import { SoundToggle } from '@/components/common/SoundToggle';
 import { cn } from '@/utils/storage';
 
@@ -17,9 +18,11 @@ export function Navbar({ className, onHowToPlay }: NavbarProps) {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5 min-w-0">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-vanchakan-purple/20 text-lg">
-            🎭
-          </span>
+          <img
+            src={ART.logo}
+            alt=""
+            className="h-9 w-9 shrink-0 rounded-lg object-cover ring-1 ring-vanchakan-purple/30"
+          />
           <div className="min-w-0">
             <p className="font-display text-lg font-bold leading-tight text-white sm:text-xl">Vanchakan</p>
             <p className="hidden text-[10px] uppercase tracking-wider text-vanchakan-muted sm:block">
