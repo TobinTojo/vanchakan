@@ -234,6 +234,13 @@ export async function getLieDetectorAnswer(roomId: string, eventNumber: number):
   return data as LieDetectorAnswerReveal | null;
 }
 
+export async function tryAdvanceSurveyIfReady(playerId: string, sessionToken: string) {
+  await supabase.rpc('try_advance_survey_if_ready', {
+    p_player_id: playerId,
+    p_session_token: sessionToken,
+  });
+}
+
 export async function fetchServerTimeOffset(): Promise<number> {
   const t0 = Date.now();
   const { data, error } = await supabase.rpc('get_server_time');

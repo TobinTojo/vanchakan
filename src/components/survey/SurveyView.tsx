@@ -11,6 +11,7 @@ import {
   submitAnswer,
   getAnswerCount,
   fetchMyAnswer,
+  tryAdvanceSurveyIfReady,
 } from '@/services/gameService';
 import { formatError } from '@/utils/storage';
 import { sounds } from '@/utils/sounds';
@@ -58,9 +59,12 @@ export function SurveyView() {
     const interval = setInterval(async () => {
       const count = await getAnswerCount(session.roomId);
       setAnswerCount(count);
-    }, 2000);
+      if (count.answered >= count.total && count.total > 0) {
+        await tryAdvanceSurveyIfReady(session.playerId, session.sessionToken);
+      }
+    }, 1500);
     return () => clearInterval(interval);
-  }, [session, room]);
+  }, [session, room?.current_question_index]);
 
   const handleSubmit = async () => {
     if (!session || !selected.trim()) return;
