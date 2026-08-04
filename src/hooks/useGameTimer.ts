@@ -25,8 +25,8 @@ export function useGameTimer(endsAt: string | null, serverOffsetMs = 0): number 
   return remaining;
 }
 
-/** Server-synced timer that triggers game_tick when time expires. */
-export function useSyncedGameTimer(total = 30, retryWhileExpired = false) {
+/** Server-synced timer. Set skipGameTick when the view calls a dedicated advance RPC. */
+export function useSyncedGameTimer(total = 30, retryWhileExpired = false, skipGameTick = false) {
   const { room, session, serverOffsetMs } = useGame();
   const remaining = useGameTimer(room?.phase_ends_at ?? null, serverOffsetMs);
   const lastTickedRef = useRef<string | null>(null);
@@ -34,6 +34,7 @@ export function useSyncedGameTimer(total = 30, retryWhileExpired = false) {
   const progress = total > 0 ? ((total - remaining) / total) * 100 : 100;
 
   useEffect(() => {
+    if (skipGameTick) return;
     if (remaining > 0) {
       lastTickedRef.current = null;
       return;
@@ -55,7 +56,7 @@ export function useSyncedGameTimer(total = 30, retryWhileExpired = false) {
       clearTimeout(retry);
       if (interval) clearInterval(interval);
     };
-  }, [remaining, session, room?.status, room?.phase_ends_at, retryWhileExpired]);
+  }, [remaining, session, room?.status, room?.phase_ends_at, retryWhileExpired, skipGameTick]);
 
   return { remaining, total, endsAt: room?.phase_ends_at, progress };
 }

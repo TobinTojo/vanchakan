@@ -6,13 +6,16 @@ import { useGame } from '@/context/GameContext';
 import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { getMyRole, advanceRoleRevealNow } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
+import { shouldDrivePhaseAdvance } from '@/utils/phaseAdvance';
 
 const ROLE_REVEAL_SECONDS = 8;
+const ADVANCE_INTERVAL_MS = 4000;
 
 export function RoleRevealView() {
-  const { session, room, myRole, setMyRole } = useGame();
-  const { remaining, progress } = useSyncedGameTimer(ROLE_REVEAL_SECONDS, false);
+  const { session, room, players, myRole, setMyRole } = useGame();
+  const { remaining, progress } = useSyncedGameTimer(ROLE_REVEAL_SECONDS, false, true);
   const advancingRef = useRef(false);
+  const drivesAdvance = session ? shouldDrivePhaseAdvance(session.playerId, players) : false;
 
   useEffect(() => {
     if (!session || myRole) return;
@@ -26,7 +29,7 @@ export function RoleRevealView() {
     if (!session || !room || room.status !== 'role_reveal') return;
 
     const tryAdvance = () => {
-      if (advancingRef.current) return;
+      if (!drivesAdvance || advancingRef.current) return;
       advancingRef.current = true;
       advanceRoleRevealNow(session.playerId, session.sessionToken)
         .catch(() => {})
@@ -37,10 +40,10 @@ export function RoleRevealView() {
 
     if (remaining <= 0) {
       tryAdvance();
-      const interval = setInterval(tryAdvance, 2000);
+      const interval = setInterval(tryAdvance, ADVANCE_INTERVAL_MS);
       return () => clearInterval(interval);
     }
-  }, [remaining, session, room?.status]);
+  }, [remaining, session, room?.status, drivesAdvance]);
 
   const isCriminal = myRole === 'criminal';
 

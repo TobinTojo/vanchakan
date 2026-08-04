@@ -83,6 +83,16 @@ function extractErrorText(error: unknown): string {
   return [err.message, err.details, err.hint].filter(Boolean).join(' ');
 }
 
+/** Benign race when multiple clients advance the same phase at once. */
+export function isRpcConflict(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+  const err = error as { code?: string; message?: string; status?: number };
+  if (err.code === '23505' || err.code === '40001' || err.code === '40P01') return true;
+  if (err.status === 409) return true;
+  const text = [err.message].filter(Boolean).join(' ');
+  return text.includes('409') || text.includes('23505') || text.includes('conflict');
+}
+
 export function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }

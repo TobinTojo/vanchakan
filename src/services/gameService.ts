@@ -7,7 +7,7 @@ import type {
   LieDetectorAnswerReveal,
   SuspectVoteResult,
 } from '@/types';
-import { generateSessionToken } from '@/utils/storage';
+import { generateSessionToken, isRpcConflict } from '@/utils/storage';
 
 export async function createRoom(displayName: string) {
   const sessionToken = generateSessionToken();
@@ -106,7 +106,7 @@ export async function submitFakeEvidence(playerId: string, sessionToken: string,
     p_session_token: sessionToken,
     p_answer_text: answerText,
   });
-  if (error && error.code !== '23505') throw error;
+  if (error && !isRpcConflict(error)) throw error;
 }
 
 export async function startInterrogation(playerId: string, sessionToken: string) {
@@ -207,8 +207,8 @@ export async function gameTick(playerId: string, sessionToken: string) {
     p_player_id: playerId,
     p_session_token: sessionToken,
   });
-  // 409/23505 = another client already advanced the phase — safe to ignore
-  if (error && error.code !== '23505') {
+  // 409 = another client already advanced the phase — safe to ignore
+  if (error && !isRpcConflict(error)) {
     throw error;
   }
 }
@@ -239,7 +239,7 @@ export async function advanceCrimeToEvidence(playerId: string, sessionToken: str
     p_player_id: playerId,
     p_session_token: sessionToken,
   });
-  if (error && error.code !== '23505') throw error;
+  if (error && !isRpcConflict(error)) throw error;
 }
 
 export async function advanceRoleRevealNow(playerId: string, sessionToken: string) {
@@ -247,7 +247,7 @@ export async function advanceRoleRevealNow(playerId: string, sessionToken: strin
     p_player_id: playerId,
     p_session_token: sessionToken,
   });
-  if (error && error.code !== '23505') throw error;
+  if (error && !isRpcConflict(error)) throw error;
 }
 
 export async function tryAdvanceSurveyIfReady(playerId: string, sessionToken: string) {
