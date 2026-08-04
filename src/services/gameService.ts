@@ -205,6 +205,16 @@ export async function playAgain(playerId: string, sessionToken: string) {
   if (error) throw error;
 }
 
+export async function advanceLieDetectorIfReady(playerId: string, sessionToken: string) {
+  const { error } = await supabase.rpc('advance_lie_detector_if_ready', {
+    p_player_id: playerId,
+    p_session_token: sessionToken,
+  });
+  if (error && !isRpcConflict(error)) {
+    throw error;
+  }
+}
+
 export async function gameTick(playerId: string, sessionToken: string) {
   const { error } = await supabase.rpc('game_tick', {
     p_player_id: playerId,

@@ -12,6 +12,7 @@ import {
   submitLieDetectorVote,
   hasSubmittedLieDetectorVote,
   getLieDetectorState,
+  advanceLieDetectorIfReady,
 } from '@/services/gameService';
 import { formatError, cn } from '@/utils/storage';
 import type { Evidence, LieDetectorState, LieDetectorStep } from '@/types';
@@ -34,7 +35,18 @@ export function LieDetectorView() {
 
   const step = room?.lie_detector_step ?? state?.step ?? 'vote_evidence';
   const isReveal = step === 'reveal_evidence' || step === 'reveal_player';
-  const { remaining } = useSyncedGameTimer(isReveal ? 12 : 0, false, !isReveal);
+  const { remaining } = useSyncedGameTimer(isReveal ? 12 : 0, isReveal, !isReveal);
+
+  useEffect(() => {
+    if (!session || !isReveal || remaining > 0) return;
+
+    const advance = () =>
+      advanceLieDetectorIfReady(session.playerId, session.sessionToken).catch(() => {});
+
+    advance();
+    const retry = setInterval(advance, 2000);
+    return () => clearInterval(retry);
+  }, [session, isReveal, remaining]);
 
   useEffect(() => {
     if (!session || !room) return;
