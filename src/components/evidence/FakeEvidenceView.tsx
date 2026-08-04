@@ -37,8 +37,8 @@ export function FakeEvidenceView() {
       await submitFakeEvidence(session.playerId, session.sessionToken, answer);
       setSubmitted(true);
     } catch (e) {
-      // If phase already advanced, treat as success
-      if (room?.status === 'evidence') {
+      // Phase may have advanced via another client or timer
+      if (room?.status === 'evidence' || room?.status === 'interrogation') {
         setSubmitted(true);
         return;
       }

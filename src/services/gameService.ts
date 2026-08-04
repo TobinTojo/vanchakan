@@ -106,7 +106,7 @@ export async function submitFakeEvidence(playerId: string, sessionToken: string,
     p_session_token: sessionToken,
     p_answer_text: answerText,
   });
-  if (error) throw error;
+  if (error && error.code !== '23505') throw error;
 }
 
 export async function startInterrogation(playerId: string, sessionToken: string) {
@@ -203,10 +203,14 @@ export async function playAgain(playerId: string, sessionToken: string) {
 }
 
 export async function gameTick(playerId: string, sessionToken: string) {
-  await supabase.rpc('game_tick', {
+  const { error } = await supabase.rpc('game_tick', {
     p_player_id: playerId,
     p_session_token: sessionToken,
   });
+  // 409/23505 = another client already advanced the phase — safe to ignore
+  if (error && error.code !== '23505') {
+    throw error;
+  }
 }
 
 export async function getAnswerCount(roomId: string): Promise<AnswerCount> {

@@ -18,7 +18,6 @@ import type {
 } from '@/types';
 import {
   heartbeat,
-  gameTick,
   fetchRoom,
   fetchPlayers,
   fetchEvidence,
@@ -200,18 +199,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
     fetchServerTimeOffset().then(setServerOffsetMs).catch(() => setServerOffsetMs(0));
   }, [room?.phase_ends_at, room?.status]);
 
-  // Heartbeat and game tick (backup poll every 2s)
+  // Heartbeat only — game_tick runs via useSyncedGameTimer when timer expires
   useEffect(() => {
     if (!session) return;
 
     const interval = setInterval(async () => {
       try {
         await heartbeat(session.playerId, session.sessionToken);
-        await gameTick(session.playerId, session.sessionToken);
       } catch {
         // silent
       }
-    }, 2000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [session]);

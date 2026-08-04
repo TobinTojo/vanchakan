@@ -42,7 +42,13 @@ export function useSyncedGameTimer(total = 30) {
     if (lastTickedRef.current === key) return;
     lastTickedRef.current = key;
 
+    // Attempt tick immediately and once more after 1.5s in case of race
     gameTick(session.playerId, session.sessionToken).catch(() => {});
+    const retry = setTimeout(() => {
+      gameTick(session.playerId, session.sessionToken).catch(() => {});
+    }, 1500);
+
+    return () => clearTimeout(retry);
   }, [remaining, session, room?.status, room?.phase_ends_at]);
 
   return { remaining, total, endsAt: room?.phase_ends_at };
