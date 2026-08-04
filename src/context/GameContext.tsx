@@ -56,13 +56,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [crime, setCrime] = useState<Crime | null>(null);
   const [interrogationRound, setInterrogationRound] = useState<InterrogationRound | null>(null);
   const [myRole, setMyRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !!getSession());
   const [error, setError] = useState<string | null>(null);
   const reconnectAttempted = useRef(false);
 
   const setSession = useCallback((s: SessionData) => {
     saveSession(s);
     setSessionState(s);
+    setRoom(null);
+    setPlayers([]);
+    setError(null);
   }, []);
 
   const clearGame = useCallback(() => {
@@ -103,41 +106,58 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
   }, [session]);
 
-  // Initial load / reconnect
+  // Reconnect on page refresh when a session already exists
   useEffect(() => {
-    async function init() {
-      const stored = getSession();
-      if (!stored) {
-        setLoading(false);
-        return;
-      }
+    const stored = getSession();
+    if (!stored || reconnectAttempted.current) return;
 
-      if (!reconnectAttempted.current) {
-        reconnectAttempted.current = true;
-        try {
-          await reconnectPlayer(stored.playerId, stored.sessionToken);
-        } catch {
-          clearSession();
-          setSessionState(null);
-          setLoading(false);
-          return;
-        }
-      }
+    reconnectAttempted.current = true;
+    reconnectPlayer(stored.playerId, stored.sessionToken).catch(() => {
+      clearSession();
+      setSessionState(null);
+      setRoom(null);
+      setPlayers([]);
+      setError('Session expired. Please rejoin the room.');
+    });
+  }, []);
 
-      setSessionState(stored);
+  // Load room data whenever session is set (create, join, or refresh)
+  useEffect(() => {
+    if (!session) {
+      setRoom(null);
+      setPlayers([]);
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    async function loadRoom() {
       try {
-        const r = await fetchRoom(stored.roomId);
+        const r = await fetchRoom(session.roomId);
+        if (cancelled) return;
         setRoom(r as Room);
-        const p = await fetchPlayers(stored.roomId);
+
+        const p = await fetchPlayers(session.roomId);
+        if (cancelled) return;
         setPlayers(p as Player[]);
       } catch (e) {
-        setError(e instanceof Error ? e.message : 'Failed to reconnect');
+        if (!cancelled) {
+          setError(e instanceof Error ? e.message : 'Failed to load room');
+          setRoom(null);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
-    init();
-  }, []);
+
+    loadRoom();
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.roomId, session?.playerId]);
 
   // Realtime subscriptions
   useEffect(() => {

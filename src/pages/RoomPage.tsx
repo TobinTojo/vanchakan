@@ -15,6 +15,8 @@ import { ResultsView } from '@/components/results/ResultsView';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { DevPanel } from '@/components/common/DevPanel';
 import { SoundToggle } from '@/components/common/SoundToggle';
+import { ErrorBanner } from '@/components/common/ErrorBanner';
+import { Button } from '@/components/common/Button';
 
 function GamePhaseRouter() {
   const { room } = useGame();
@@ -54,19 +56,17 @@ function GamePhaseRouter() {
 export function RoomPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
-  const { session, loading } = useGame();
+  const { session, loading, error, clearGame } = useGame();
 
   useEffect(() => {
     if (!loading && !session) {
-      navigate('/', { replace: true });
+      if (code) {
+        navigate(`/?code=${code.toUpperCase()}`, { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
     }
-  }, [loading, session, navigate]);
-
-  useEffect(() => {
-    if (session && code && session.roomCode !== code.toUpperCase()) {
-      // URL code mismatch is fine if session exists
-    }
-  }, [session, code]);
+  }, [loading, session, navigate, code]);
 
   if (loading) {
     return (
@@ -83,6 +83,21 @@ export function RoomPage() {
       <div className="absolute top-4 right-4">
         <SoundToggle />
       </div>
+      {error && (
+        <div className="mx-auto mb-4 max-w-lg">
+          <ErrorBanner message={error} />
+          <Button
+            variant="secondary"
+            className="mt-3 w-full"
+            onClick={() => {
+              clearGame();
+              navigate(code ? `/?code=${code.toUpperCase()}` : '/', { replace: true });
+            }}
+          >
+            Return Home
+          </Button>
+        </div>
+      )}
       <GamePhaseRouter />
       <DevPanel />
     </div>
