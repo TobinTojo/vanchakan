@@ -25,6 +25,7 @@ import {
   fetchInterrogationRound,
   reconnectPlayer,
   fetchServerTimeOffset,
+  getMyRole,
 } from '@/services/gameService';
 import { getSession, saveSession, clearSession } from '@/utils/storage';
 
@@ -238,6 +239,21 @@ export function GameProvider({ children }: { children: ReactNode }) {
       .then((ir) => setInterrogationRound(ir as InterrogationRound))
       .catch(() => setInterrogationRound(null));
   }, [session, room?.status, room?.current_round]);
+
+  // Restore role after refresh once past role reveal
+  useEffect(() => {
+    if (!session || !room || myRole) return;
+    const pastRoleReveal = !['lobby', 'survey'].includes(room.status);
+    if (!pastRoleReveal) return;
+    getMyRole(session.playerId, session.sessionToken)
+      .then((role) => setMyRole(role))
+      .catch(() => {});
+  }, [session, room?.status, myRole]);
+
+  // Clear role when returning to lobby
+  useEffect(() => {
+    if (room?.status === 'lobby') setMyRole(null);
+  }, [room?.status]);
 
   const me = players.find((p) => p.id === session?.playerId) ?? null;
   const isHost = me?.is_host ?? false;

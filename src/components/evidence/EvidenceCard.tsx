@@ -7,6 +7,11 @@ interface EvidenceCardProps {
   showMatchCount?: boolean;
 }
 
+/** Strip trailing "You:" from survey question prompts for cleaner display. */
+export function cleanQuestionText(text: string): string {
+  return text.replace(/\s+You:\s*$/i, '').trim();
+}
+
 export function EvidenceCard({ evidence, active, showMatchCount = true }: EvidenceCardProps) {
   const matchCount = evidence.matching_count;
   const totalPlayers = evidence.total_players;
@@ -15,6 +20,9 @@ export function EvidenceCard({ evidence, active, showMatchCount = true }: Eviden
     matchCount !== undefined &&
     totalPlayers !== undefined &&
     totalPlayers > 0;
+
+  const hasStructured =
+    Boolean(evidence.question_text?.trim()) && Boolean(evidence.answer_text?.trim());
 
   return (
     <div
@@ -28,7 +36,7 @@ export function EvidenceCard({ evidence, active, showMatchCount = true }: Eviden
         active && 'ring-2 ring-vanchakan-gold'
       )}
     >
-      <div className="mb-2 flex items-center justify-between gap-2">
+      <div className="mb-3 flex items-center justify-between gap-2">
         <span className="text-xs font-bold uppercase tracking-wider text-vanchakan-gold">
           Evidence #{evidence.evidence_order}
         </span>
@@ -52,7 +60,25 @@ export function EvidenceCard({ evidence, active, showMatchCount = true }: Eviden
           )}
         </div>
       </div>
-      <p className="text-sm text-white">{evidence.evidence_text}</p>
+
+      {hasStructured ? (
+        <div className="space-y-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-vanchakan-muted">
+              Survey question
+            </p>
+            <p className="text-sm text-white/90">{cleanQuestionText(evidence.question_text!)}</p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-vanchakan-muted">
+              Criminal's answer
+            </p>
+            <p className="text-base font-semibold text-vanchakan-gold">"{evidence.answer_text}"</p>
+          </div>
+        </div>
+      ) : (
+        <p className="text-sm text-white">{evidence.evidence_text}</p>
+      )}
     </div>
   );
 }

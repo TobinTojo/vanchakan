@@ -80,6 +80,7 @@ export interface Evidence {
   evidence_order: number;
   evidence_text: string;
   question_id?: string | null;
+  question_text?: string | null;
   answer_text?: string | null;
   matching_count?: number;
   total_players?: number;
@@ -159,6 +160,8 @@ export interface GameResultsData {
   evidence: Array<{
     order: number;
     text: string;
+    question_text?: string | null;
+    answer_text?: string | null;
     is_fake: boolean;
     is_inspected: boolean;
     inspection_result: string | null;
