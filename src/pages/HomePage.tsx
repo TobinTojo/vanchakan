@@ -3,11 +3,18 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { Input } from '@/components/common/Input';
-import { SoundToggle } from '@/components/common/SoundToggle';
 import { ErrorBanner } from '@/components/common/ErrorBanner';
+import { SiteLayout } from '@/components/layout/SiteLayout';
 import { createRoom, joinRoom } from '@/services/gameService';
 import { useGame } from '@/context/GameContext';
 import { formatError } from '@/utils/storage';
+
+const FEATURES = [
+  { icon: '👥', label: '3–8 players' },
+  { icon: '🔍', label: 'Survey & evidence' },
+  { icon: '🎭', label: 'Hidden roles' },
+  { icon: '📱', label: 'Play on any device' },
+];
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -15,17 +22,20 @@ export function HomePage() {
   const [searchParams] = useSearchParams();
   const [name, setName] = useState('');
   const [roomCode, setRoomCode] = useState(searchParams.get('code')?.toUpperCase() ?? '');
+  const [loading, setLoading] = useState<'create' | 'join' | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
 
   useEffect(() => {
     const code = searchParams.get('code');
     if (code) setRoomCode(code.toUpperCase());
   }, [searchParams]);
-  const [loading, setLoading] = useState<'create' | 'join' | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [showHowToPlay, setShowHowToPlay] = useState(false);
 
   const handleCreate = async () => {
-    if (!name.trim()) { setError('Please enter your name'); return; }
+    if (!name.trim()) {
+      setError('Please enter your name');
+      return;
+    }
     setLoading('create');
     setError(null);
     try {
@@ -46,8 +56,14 @@ export function HomePage() {
   };
 
   const handleJoin = async () => {
-    if (!name.trim()) { setError('Please enter your name'); return; }
-    if (!roomCode.trim()) { setError('Please enter a room code'); return; }
+    if (!name.trim()) {
+      setError('Please enter your name');
+      return;
+    }
+    if (!roomCode.trim()) {
+      setError('Please enter a room code');
+      return;
+    }
     setLoading('join');
     setError(null);
     try {
@@ -68,85 +84,131 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-vanchakan-bg">
-      <div className="absolute top-4 right-4">
-        <SoundToggle />
-      </div>
+    <SiteLayout onHowToPlay={() => setShowHowToPlay(true)}>
+      {/* Hero */}
+      <section className="page-container pb-8 pt-4 sm:pt-10">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="text-center lg:text-left">
+            <p className="mb-3 inline-block rounded-full border border-vanchakan-purple/30 bg-vanchakan-purple/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-vanchakan-purple-light">
+              Multiplayer social deduction
+            </p>
+            <h1 className="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+              Catch the{' '}
+              <span className="bg-gradient-to-r from-vanchakan-gold to-vanchakan-purple-light bg-clip-text text-transparent">
+                Vanchakan
+              </span>
+            </h1>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-vanchakan-muted sm:text-lg lg:mx-0 mx-auto">
+              Answer survey questions, study the evidence, interrogate suspects, and vote — but
+              someone is lying, and one clue is fake.
+            </p>
 
-      <div className="mx-auto max-w-lg px-4 py-12">
-        <header className="mb-10 text-center">
-          <div className="mb-4 text-6xl">🎭</div>
-          <h1 className="font-display text-5xl font-bold text-white">Vanchakan</h1>
-          <p className="mt-2 text-vanchakan-muted">
-            The social deduction game where someone is lying — and the evidence might be too.
-          </p>
-        </header>
+            <div className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
+              {FEATURES.map((f) => (
+                <span
+                  key={f.label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-vanchakan-border bg-vanchakan-surface/80 px-3 py-1.5 text-xs font-medium text-vanchakan-muted"
+                >
+                  <span>{f.icon}</span>
+                  {f.label}
+                </span>
+              ))}
+            </div>
 
-        {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+            <button
+              type="button"
+              onClick={() => setShowHowToPlay(true)}
+              className="mt-4 text-sm font-medium text-vanchakan-purple-light underline-offset-2 hover:underline sm:hidden"
+            >
+              How to Play
+            </button>
+          </div>
 
-        <Card className="mb-6" glow>
-          <Input
-            label="Your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter display name"
-            maxLength={20}
-            autoComplete="off"
-          />
+          {/* Join form */}
+          <div className="w-full max-w-md mx-auto lg:max-w-none lg:ml-auto">
+            {error && (
+              <div className="mb-4">
+                <ErrorBanner message={error} onDismiss={() => setError(null)} />
+              </div>
+            )}
 
-          <Button
-            onClick={handleCreate}
-            loading={loading === 'create'}
-            size="lg"
-            className="mt-4 w-full"
-          >
-            Create Room
-          </Button>
-        </Card>
+            <Card glow className="shadow-glow">
+              <h2 className="mb-1 text-lg font-semibold text-white">Get started</h2>
+              <p className="mb-5 text-sm text-vanchakan-muted">No account needed — just a name.</p>
 
-        <Card>
-          <h2 className="mb-4 text-lg font-semibold text-white">Join Room</h2>
-          <Input
-            label="Room Code"
-            value={roomCode}
-            onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
-            placeholder="ABC123"
-            maxLength={6}
-            className="mb-4 font-mono tracking-widest uppercase"
-          />
-          <Button
-            onClick={handleJoin}
-            loading={loading === 'join'}
-            variant="secondary"
-            size="lg"
-            className="w-full"
-          >
-            Join Room
-          </Button>
-        </Card>
+              <Input
+                label="Your Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Display name"
+                maxLength={20}
+                autoComplete="off"
+              />
 
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => setShowHowToPlay(!showHowToPlay)}
-            className="text-sm text-vanchakan-purple-light underline hover:text-white"
-          >
-            How to Play
-          </button>
+              <Button
+                onClick={handleCreate}
+                loading={loading === 'create'}
+                size="lg"
+                className="mt-4 w-full"
+              >
+                Create Room
+              </Button>
+
+              <div className="my-5 flex items-center gap-3">
+                <div className="h-px flex-1 bg-vanchakan-border" />
+                <span className="text-xs font-medium uppercase tracking-wider text-vanchakan-muted">
+                  or join
+                </span>
+                <div className="h-px flex-1 bg-vanchakan-border" />
+              </div>
+
+              <Input
+                label="Room Code"
+                value={roomCode}
+                onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+                placeholder="ABC123"
+                maxLength={6}
+                className="font-mono tracking-widest uppercase"
+              />
+              <Button
+                onClick={handleJoin}
+                loading={loading === 'join'}
+                variant="secondary"
+                size="lg"
+                className="mt-4 w-full"
+              >
+                Join Room
+              </Button>
+            </Card>
+          </div>
         </div>
+      </section>
 
-        {showHowToPlay && (
-          <Card className="mt-4 animate-slide-up">
-            <ol className="list-decimal space-y-2 pl-5 text-sm text-vanchakan-muted">
-              <li>3–8 players join a private room with a code</li>
+      {showHowToPlay && (
+        <section className="page-container pb-12 animate-slide-up">
+          <Card>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">How to Play</h2>
+              <button
+                type="button"
+                onClick={() => setShowHowToPlay(false)}
+                className="text-vanchakan-muted hover:text-white"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <ol className="list-decimal space-y-3 pl-5 text-sm leading-relaxed text-vanchakan-muted">
+              <li>3–8 players join a private room with a 6-character code</li>
               <li>Everyone answers 8 survey questions — answers become evidence</li>
               <li>One player is secretly the Vanchakan (criminal)</li>
-              <li>One innocent plants fake evidence to confuse everyone</li>
-              <li>Interrogate suspects, use the lie detector, and vote</li>
+              <li>Study evidence, interrogate suspects, and use the lie detector</li>
+              <li>Vote on your top suspects and make a final accusation</li>
               <li>Catch the Vanchakan before they escape!</li>
             </ol>
           </Card>
-        )}
-      </div>
-    </div>
+        </section>
+      )}
+    </SiteLayout>
   );
 }

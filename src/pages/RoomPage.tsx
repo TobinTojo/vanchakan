@@ -79,8 +79,10 @@ export function RoomPage() {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-vanchakan-bg px-4 py-4 sm:py-8">
-      <GameTopBar />
+    <div className="min-h-screen bg-vanchakan-bg">
+      <div className="pointer-events-none fixed inset-0 bg-hero-glow" aria-hidden="true" />
+      <div className="relative game-container">
+        <GameTopBar />
       {error && (
         <div className="mx-auto mb-4 max-w-lg">
           <ErrorBanner message={error} />
@@ -98,6 +100,7 @@ export function RoomPage() {
       )}
       <GamePhaseRouter />
       <DevPanel />
+      </div>
     </div>
   );
 }

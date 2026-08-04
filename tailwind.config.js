@@ -5,26 +5,35 @@ export default {
     extend: {
       colors: {
         vanchakan: {
-          bg: '#0f0a14',
-          surface: '#1a1225',
-          card: '#241832',
-          border: '#3d2a54',
-          purple: '#9b59b6',
-          'purple-light': '#bb86fc',
-          red: '#e74c3c',
-          gold: '#f1c40f',
-          muted: '#8b7a9e',
+          bg: '#0a0612',
+          surface: '#130d1c',
+          card: '#1c1428',
+          border: '#2e2040',
+          purple: '#8b5cf6',
+          'purple-light': '#a78bfa',
+          red: '#f87171',
+          gold: '#fbbf24',
+          muted: '#9ca3af',
         },
       },
       fontFamily: {
-        display: ['Georgia', 'serif'],
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      backgroundImage: {
+        'hero-glow':
+          'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139,92,246,0.18), transparent), radial-gradient(ellipse 60% 40% at 100% 0%, rgba(251,191,36,0.06), transparent)',
+        'card-shine': 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%)',
+      },
+      boxShadow: {
+        card: '0 4px 24px -4px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04)',
+        glow: '0 0 40px -8px rgba(139,92,246,0.35)',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'fade-in': 'fadeIn 0.5s ease-out',
         'slide-up': 'slideUp 0.4s ease-out',
-        'reveal': 'reveal 0.6s ease-out',
+        reveal: 'reveal 0.6s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -43,4 +52,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

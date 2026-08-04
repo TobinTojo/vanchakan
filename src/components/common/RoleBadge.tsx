@@ -2,7 +2,6 @@ import { useGame } from '@/context/GameContext';
 import { cn } from '@/utils/storage';
 
 const PHASES_WITH_ROLE = new Set([
-  'role_reveal',
   'crime_reveal',
   'fake_evidence',
   'evidence',

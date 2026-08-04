@@ -10,8 +10,8 @@ export function Card({ children, className, glow }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-xl border border-vanchakan-border bg-vanchakan-card p-6',
-        glow && 'shadow-lg shadow-vanchakan-purple/10',
+        'rounded-2xl border border-vanchakan-border/80 bg-vanchakan-card bg-card-shine p-5 shadow-card sm:p-6',
+        glow && 'shadow-glow border-vanchakan-purple/30',
         className
       )}
     >

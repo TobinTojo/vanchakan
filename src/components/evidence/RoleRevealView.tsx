@@ -8,7 +8,7 @@ import { getMyRole, advanceRoleRevealNow } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
 import { shouldDrivePhaseAdvance } from '@/utils/phaseAdvance';
 
-const ROLE_REVEAL_SECONDS = 8;
+const ROLE_REVEAL_SECONDS = 5;
 const ADVANCE_INTERVAL_MS = 4000;
 
 export function RoleRevealView() {
@@ -51,19 +51,22 @@ export function RoleRevealView() {
     <div className="mx-auto max-w-lg animate-fade-in">
       <PhaseHeader phase="Role Assignment" title="Your Role" />
 
-      <Card glow className="text-center animate-reveal">
+      <Card glow className="text-center animate-reveal py-8 sm:py-10">
         {myRole ? (
           <>
-            <div className={`mb-4 text-6xl ${isCriminal ? 'text-vanchakan-red' : 'text-vanchakan-gold'}`}>
+            <div className={`mb-6 text-7xl sm:text-8xl ${isCriminal ? 'text-vanchakan-red' : 'text-vanchakan-gold'}`}>
               {isCriminal ? '🎭' : '🔍'}
             </div>
-            <h2 className={`mb-4 text-2xl font-bold ${isCriminal ? 'text-vanchakan-red' : 'text-vanchakan-gold'}`}>
-              {isCriminal ? 'You are the Vanchakan.' : 'You are innocent.'}
+            <h2 className={`mb-4 text-3xl font-bold sm:text-4xl ${isCriminal ? 'text-vanchakan-red' : 'text-vanchakan-gold'}`}>
+              {isCriminal ? 'You are the Vanchakan' : 'You are innocent'}
             </h2>
-            <p className="text-vanchakan-muted">
+            <p className="mx-auto max-w-sm text-base leading-relaxed text-vanchakan-muted">
               {isCriminal
-                ? 'You committed the crime. Convince everyone that the evidence does not point to you.'
-                : 'Study the evidence, question the suspects, and identify the Vanchakan.'}
+                ? 'You committed the crime. Convince everyone the evidence does not point to you.'
+                : 'Study the evidence, question suspects, and identify the Vanchakan.'}
+            </p>
+            <p className="mt-6 text-sm font-medium text-vanchakan-purple-light">
+              Remember your role — it stays visible in the top bar.
             </p>
           </>
         ) : (
@@ -73,7 +76,7 @@ export function RoleRevealView() {
 
       <PhaseProgressBar
         progress={progress}
-        label={remaining > 0 ? `Continuing in ${remaining}s...` : 'Revealing the crime...'}
+        label={remaining > 0 ? `Role revealed — continuing in ${remaining}s` : 'Revealing the crime...'}
       />
     </div>
   );

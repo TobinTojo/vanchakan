@@ -10,7 +10,7 @@ import { nextInterrogationRound, selectInterrogationTarget } from '@/services/ga
 import { formatError } from '@/utils/storage';
 
 export function InterrogationView() {
-  const { session, room, players, evidence, interrogationRound, isHost } = useGame();
+  const { session, room, players, evidence, interrogationRound } = useGame();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -128,7 +128,7 @@ export function InterrogationView() {
         </>
       )}
 
-      {(isHost || isInterrogator) && targetSelected && (
+      {isInterrogator && targetSelected && (
         <div className="mt-6 text-center">
           <Button onClick={handleNextRound} loading={loading}>
             {room.current_round >= 6 ? 'Proceed to Suspect Vote' : 'End Round'}

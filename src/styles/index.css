@@ -7,6 +7,10 @@
     @apply box-border;
   }
 
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-vanchakan-bg text-white antialiased;
     font-family: 'Inter', system-ui, sans-serif;
@@ -20,5 +24,15 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10;
+  }
+
+  .game-container {
+    @apply mx-auto w-full max-w-xl px-4 py-4 sm:max-w-2xl sm:py-6;
   }
 }
