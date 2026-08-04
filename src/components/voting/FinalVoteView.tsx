@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { GameTimer } from '@/components/common/GameTimer';
@@ -17,13 +17,22 @@ export function FinalVoteView() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const prevStatusRef = useRef<string | null>(null);
 
   const isTieBreaker = room?.status === 'tie_breaker';
-  const { remaining } = useSyncedGameTimer(isTieBreaker ? 20 : 30);
+  const { remaining } = useSyncedGameTimer(isTieBreaker ? 20 : 30, true);
 
   useEffect(() => {
     if (!session || !room) return;
+
     const tieBreaker = room.status === 'tie_breaker';
+    if (prevStatusRef.current === 'final_vote' && room.status === 'tie_breaker') {
+      setSubmitted(false);
+      setSelected(null);
+      setError(null);
+    }
+    prevStatusRef.current = room.status;
+
     hasSubmittedFinalVote(session.roomId, session.playerId, tieBreaker).then(setSubmitted);
 
     if (tieBreaker && room.tie_breaker_candidates) {
@@ -38,11 +47,12 @@ export function FinalVoteView() {
         setFinalists(results.filter((r) => !r.eliminated || r.votes > 0));
       });
     }
-  }, [session, room, players]);
+  }, [session, room?.status, room?.tie_breaker_candidates, players]);
 
   const handleSubmit = async () => {
     if (!session || !selected) return;
     setLoading(true);
+    setError(null);
     try {
       await submitFinalVote(session.playerId, session.sessionToken, selected, isTieBreaker);
       setSubmitted(true);
@@ -63,7 +73,11 @@ export function FinalVoteView() {
         <PhaseHeader
           phase={isTieBreaker ? 'Tie Breaker' : 'Final Vote'}
           title="Vote Submitted"
-          subtitle="The verdict is being decided..."
+          subtitle={
+            isTieBreaker
+              ? 'Waiting for others to break the tie...'
+              : 'The verdict is being decided...'
+          }
         />
         <GameTimer remaining={remaining} total={isTieBreaker ? 20 : 30} />
       </div>
@@ -75,7 +89,11 @@ export function FinalVoteView() {
       <PhaseHeader
         phase={isTieBreaker ? 'Tie Breaker' : 'Final Vote'}
         title={isTieBreaker ? 'Break the Tie!' : 'Cast Your Final Vote'}
-        subtitle="Who is the Vanchakan?"
+        subtitle={
+          isTieBreaker
+            ? 'The first vote was tied — pick one of the tied suspects'
+            : 'Who is the Vanchakan?'
+        }
       />
 
       <div className="mb-6 flex justify-center">
@@ -93,7 +111,7 @@ export function FinalVoteView() {
           maxSelections={1}
         />
         <Button onClick={handleSubmit} disabled={!selected} loading={loading} variant="danger" className="mt-4 w-full" size="lg">
-          Accuse Suspect
+          {isTieBreaker ? 'Break the Tie' : 'Accuse Suspect'}
         </Button>
         {error && <p className="mt-2 text-sm text-vanchakan-red">{error}</p>}
       </Card>

@@ -1,22 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
-import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
 import { ART } from '@/assets/art';
 import { useGame } from '@/context/GameContext';
-import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { getMyRole, advanceRoleRevealNow } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
-import { shouldDrivePhaseAdvance } from '@/utils/phaseAdvance';
-
-const ROLE_REVEAL_SECONDS = 5;
-const ADVANCE_INTERVAL_MS = 4000;
+import { formatError } from '@/utils/storage';
 
 export function RoleRevealView() {
-  const { session, room, players, myRole, setMyRole } = useGame();
-  const { remaining, progress } = useSyncedGameTimer(ROLE_REVEAL_SECONDS, false, true);
-  const advancingRef = useRef(false);
-  const drivesAdvance = session ? shouldDrivePhaseAdvance(session.playerId, players) : false;
+  const { session, room, myRole, setMyRole, isHost } = useGame();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session || myRole) return;
@@ -26,25 +21,18 @@ export function RoleRevealView() {
     });
   }, [session, myRole, setMyRole]);
 
-  useEffect(() => {
-    if (!session || !room || room.status !== 'role_reveal') return;
-
-    const tryAdvance = () => {
-      if (!drivesAdvance || advancingRef.current) return;
-      advancingRef.current = true;
-      advanceRoleRevealNow(session.playerId, session.sessionToken)
-        .catch(() => {})
-        .finally(() => {
-          advancingRef.current = false;
-        });
-    };
-
-    if (remaining <= 0) {
-      tryAdvance();
-      const interval = setInterval(tryAdvance, ADVANCE_INTERVAL_MS);
-      return () => clearInterval(interval);
+  const handleContinue = async () => {
+    if (!session) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await advanceRoleRevealNow(session.playerId, session.sessionToken);
+    } catch (e) {
+      setError(formatError(e));
+    } finally {
+      setLoading(false);
     }
-  }, [remaining, session, room?.status, drivesAdvance]);
+  };
 
   const isCriminal = myRole === 'criminal';
 
@@ -71,7 +59,7 @@ export function RoleRevealView() {
                 : 'Study the evidence, question suspects, and identify the Vanchakan.'}
             </p>
             <p className="mt-6 text-sm font-medium text-vanchakan-purple-light">
-              Remember your role — it stays visible in the top bar.
+              Remember your role — tap the badge in the top bar anytime for a reminder.
             </p>
           </>
         ) : (
@@ -79,10 +67,22 @@ export function RoleRevealView() {
         )}
       </Card>
 
-      <PhaseProgressBar
-        progress={progress}
-        label={remaining > 0 ? `Role revealed — continuing in ${remaining}s` : 'Revealing the crime...'}
-      />
+      {room?.status === 'role_reveal' && myRole && (
+        <div className="mt-6">
+          {isHost ? (
+            <>
+              <Button onClick={handleContinue} loading={loading} size="lg" className="w-full">
+                Reveal the Crime
+              </Button>
+              {error && <p className="mt-2 text-center text-sm text-vanchakan-red">{error}</p>}
+            </>
+          ) : (
+            <p className="text-center text-sm text-vanchakan-muted">
+              Waiting for the host to continue...
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

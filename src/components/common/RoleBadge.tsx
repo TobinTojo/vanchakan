@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
+import { Modal } from '@/components/common/Modal';
 import { ART } from '@/assets/art';
 import { useGame } from '@/context/GameContext';
 import { cn } from '@/utils/storage';
@@ -53,17 +54,6 @@ export function RoleBadge() {
   const { room, myRole } = useGame();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [open]);
-
   if (!myRole || !room || !PHASES_WITH_ROLE.has(room.status)) return null;
   if (myRole !== 'criminal' && myRole !== 'innocent') return null;
 
@@ -88,44 +78,30 @@ export function RoleBadge() {
         <span className="leading-none">{info.label}</span>
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
-          onClick={() => setOpen(false)}
-          role="presentation"
-        >
-          <div
-            className="w-full max-w-md animate-fade-in"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="role-popup-title"
-          >
-            <Card glow className="text-center">
-              <img
-                src={info.image}
-                alt=""
-                className="mx-auto mb-4 h-28 w-28 rounded-2xl object-cover ring-2 ring-white/10"
-              />
-              <h2 id="role-popup-title" className={cn('mb-2 text-2xl font-bold', info.accent)}>
-                {info.title}
-              </h2>
-              <p className="mb-5 text-sm leading-relaxed text-vanchakan-muted">{info.summary}</p>
-              <ul className="mb-6 space-y-2 text-left text-sm text-white/90">
-                {info.tips.map((tip) => (
-                  <li key={tip} className="flex gap-2">
-                    <span className="shrink-0 text-vanchakan-purple-light">•</span>
-                    <span>{tip}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button onClick={() => setOpen(false)} className="w-full">
-                Got it
-              </Button>
-            </Card>
-          </div>
-        </div>
-      )}
+      <Modal open={open} onClose={() => setOpen(false)} labelledBy="role-popup-title">
+        <Card glow className="text-center">
+          <img
+            src={info.image}
+            alt=""
+            className="mx-auto mb-4 h-28 w-28 rounded-2xl object-cover ring-2 ring-white/10"
+          />
+          <h2 id="role-popup-title" className={cn('mb-2 text-2xl font-bold', info.accent)}>
+            {info.title}
+          </h2>
+          <p className="mb-5 text-sm leading-relaxed text-vanchakan-muted">{info.summary}</p>
+          <ul className="mb-6 space-y-2 text-left text-sm text-white/90">
+            {info.tips.map((tip) => (
+              <li key={tip} className="flex gap-2">
+                <span className="shrink-0 text-vanchakan-purple-light">•</span>
+                <span>{tip}</span>
+              </li>
+            ))}
+          </ul>
+          <Button onClick={() => setOpen(false)} className="w-full">
+            Got it
+          </Button>
+        </Card>
+      </Modal>
     </>
   );
 }

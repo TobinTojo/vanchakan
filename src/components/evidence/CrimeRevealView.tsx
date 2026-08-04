@@ -1,47 +1,30 @@
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
+import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
-import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
 import { ART } from '@/assets/art';
-import { useGame } from '@/context/GameContext';import { useSyncedGameTimer } from '@/hooks/useGameTimer';
+import { useGame } from '@/context/GameContext';
 import { advanceCrimeToEvidence } from '@/services/gameService';
-import { shouldDrivePhaseAdvance } from '@/utils/phaseAdvance';
-
-const CRIME_REVEAL_SECONDS = 6;
-const ADVANCE_INTERVAL_MS = 4000;
+import { formatError } from '@/utils/storage';
 
 export function CrimeRevealView() {
-  const { session, crime, room, players, refreshRoom } = useGame();
-  const { remaining, progress } = useSyncedGameTimer(CRIME_REVEAL_SECONDS, false, true);
-  const advancingRef = useRef(false);
-  const drivesAdvance = session ? shouldDrivePhaseAdvance(session.playerId, players) : false;
+  const { session, crime, room, isHost, refreshRoom } = useGame();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!session || !room || room.status !== 'crime_reveal') return;
-
-    const tryAdvance = () => {
-      if (!drivesAdvance || advancingRef.current) return;
-      advancingRef.current = true;
-      advanceCrimeToEvidence(session.playerId, session.sessionToken)
-        .then(() => refreshRoom())
-        .catch(() => {})
-        .finally(() => {
-          advancingRef.current = false;
-        });
-    };
-
-    if (remaining <= 0) {
-      tryAdvance();
-      const interval = setInterval(tryAdvance, ADVANCE_INTERVAL_MS);
-      return () => clearInterval(interval);
+  const handleContinue = async () => {
+    if (!session) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await advanceCrimeToEvidence(session.playerId, session.sessionToken);
+      await refreshRoom();
+    } catch (e) {
+      setError(formatError(e));
+    } finally {
+      setLoading(false);
     }
-  }, [remaining, session, room?.status, refreshRoom, drivesAdvance]);
-
-  useEffect(() => {
-    if (!session || room?.status !== 'crime_reveal' || drivesAdvance) return;
-    const interval = setInterval(() => refreshRoom().catch(() => {}), ADVANCE_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [session, room?.status, refreshRoom, drivesAdvance]);
+  };
 
   return (
     <div className="mx-auto max-w-lg animate-fade-in">
@@ -56,21 +39,30 @@ export function CrimeRevealView() {
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-vanchakan-card via-vanchakan-card/40 to-transparent" />
         </div>
-        <p className="text-xl font-display italic text-vanchakan-red">          {crime?.crime_text ?? 'Investigating the scene...'}
+        <p className="text-xl font-display italic text-vanchakan-red">
+          {crime?.crime_text ?? 'Investigating the scene...'}
         </p>
         <p className="mt-4 text-sm text-vanchakan-muted">
-          Compiling witness statements into evidence cards...
+          Survey answers will be compiled into evidence cards.
         </p>
       </Card>
 
-      <PhaseProgressBar
-        progress={progress}
-        label={
-          remaining > 0
-            ? `Gathering evidence in ${remaining}s...`
-            : 'Opening evidence board...'
-        }
-      />
+      {room?.status === 'crime_reveal' && (
+        <div className="mt-6">
+          {isHost ? (
+            <>
+              <Button onClick={handleContinue} loading={loading} size="lg" className="w-full">
+                Open Evidence Board
+              </Button>
+              {error && <p className="mt-2 text-center text-sm text-vanchakan-red">{error}</p>}
+            </>
+          ) : (
+            <p className="text-center text-sm text-vanchakan-muted">
+              Waiting for the host to continue...
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
