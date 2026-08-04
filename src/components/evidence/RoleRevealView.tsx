@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
 import { useGame } from '@/context/GameContext';
 import { useSyncedGameTimer } from '@/hooks/useGameTimer';
-import { getMyRole } from '@/services/gameService';
+import { getMyRole, advanceRoleRevealNow } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
 
 const ROLE_REVEAL_SECONDS = 8;
 
 export function RoleRevealView() {
-  const { session, myRole, setMyRole } = useGame();
-  const { remaining, progress } = useSyncedGameTimer(ROLE_REVEAL_SECONDS, true);
+  const { session, room, myRole, setMyRole } = useGame();
+  const { remaining, progress } = useSyncedGameTimer(ROLE_REVEAL_SECONDS, false);
+  const advancingRef = useRef(false);
 
   useEffect(() => {
     if (!session || myRole) return;
@@ -20,6 +21,26 @@ export function RoleRevealView() {
       sounds.roleReveal();
     });
   }, [session, myRole, setMyRole]);
+
+  useEffect(() => {
+    if (!session || !room || room.status !== 'role_reveal') return;
+
+    const tryAdvance = () => {
+      if (advancingRef.current) return;
+      advancingRef.current = true;
+      advanceRoleRevealNow(session.playerId, session.sessionToken)
+        .catch(() => {})
+        .finally(() => {
+          advancingRef.current = false;
+        });
+    };
+
+    if (remaining <= 0) {
+      tryAdvance();
+      const interval = setInterval(tryAdvance, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [remaining, session, room?.status]);
 
   const isCriminal = myRole === 'criminal';
 
@@ -49,7 +70,7 @@ export function RoleRevealView() {
 
       <PhaseProgressBar
         progress={progress}
-        label={remaining > 0 ? `Continuing in ${remaining}s...` : 'Loading next phase...'}
+        label={remaining > 0 ? `Continuing in ${remaining}s...` : 'Revealing the crime...'}
       />
     </div>
   );

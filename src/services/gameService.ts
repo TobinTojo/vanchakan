@@ -234,6 +234,22 @@ export async function getLieDetectorAnswer(roomId: string, eventNumber: number):
   return data as LieDetectorAnswerReveal | null;
 }
 
+export async function advanceCrimeToEvidence(playerId: string, sessionToken: string) {
+  const { error } = await supabase.rpc('advance_crime_to_evidence', {
+    p_player_id: playerId,
+    p_session_token: sessionToken,
+  });
+  if (error && error.code !== '23505') throw error;
+}
+
+export async function advanceRoleRevealNow(playerId: string, sessionToken: string) {
+  const { error } = await supabase.rpc('advance_role_reveal_now', {
+    p_player_id: playerId,
+    p_session_token: sessionToken,
+  });
+  if (error && error.code !== '23505') throw error;
+}
+
 export async function tryAdvanceSurveyIfReady(playerId: string, sessionToken: string) {
   await supabase.rpc('try_advance_survey_if_ready', {
     p_player_id: playerId,
