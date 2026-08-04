@@ -26,10 +26,12 @@ export function useGameTimer(endsAt: string | null, serverOffsetMs = 0): number 
 }
 
 /** Server-synced timer that triggers game_tick when time expires. */
-export function useSyncedGameTimer(total = 30) {
+export function useSyncedGameTimer(total = 30, retryWhileExpired = false) {
   const { room, session, serverOffsetMs } = useGame();
   const remaining = useGameTimer(room?.phase_ends_at ?? null, serverOffsetMs);
   const lastTickedRef = useRef<string | null>(null);
+
+  const progress = total > 0 ? ((total - remaining) / total) * 100 : 100;
 
   useEffect(() => {
     if (remaining > 0) {
@@ -39,19 +41,23 @@ export function useSyncedGameTimer(total = 30) {
     if (!session || !room?.phase_ends_at) return;
 
     const key = `${room.status}-${room.phase_ends_at}`;
-    if (lastTickedRef.current === key) return;
-    lastTickedRef.current = key;
+    const tick = () => gameTick(session.playerId, session.sessionToken).catch(() => {});
 
-    // Attempt tick immediately and once more after 1.5s in case of race
-    gameTick(session.playerId, session.sessionToken).catch(() => {});
-    const retry = setTimeout(() => {
-      gameTick(session.playerId, session.sessionToken).catch(() => {});
-    }, 1500);
+    if (lastTickedRef.current !== key) {
+      lastTickedRef.current = key;
+      tick();
+    }
 
-    return () => clearTimeout(retry);
-  }, [remaining, session, room?.status, room?.phase_ends_at]);
+    const retry = setTimeout(tick, 1500);
+    const interval = retryWhileExpired ? setInterval(tick, 2500) : undefined;
 
-  return { remaining, total, endsAt: room?.phase_ends_at };
+    return () => {
+      clearTimeout(retry);
+      if (interval) clearInterval(interval);
+    };
+  }, [remaining, session, room?.status, room?.phase_ends_at, retryWhileExpired]);
+
+  return { remaining, total, endsAt: room?.phase_ends_at, progress };
 }
 
 export function usePreviousPhaseWarning(remaining: number, threshold = 5): boolean {

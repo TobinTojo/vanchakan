@@ -1,9 +1,14 @@
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
+import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
 import { useGame } from '@/context/GameContext';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
+
+const CRIME_REVEAL_SECONDS = 6;
 
 export function CrimeRevealView() {
   const { crime } = useGame();
+  const { remaining, progress } = useSyncedGameTimer(CRIME_REVEAL_SECONDS, true);
 
   return (
     <div className="mx-auto max-w-lg animate-fade-in">
@@ -18,6 +23,11 @@ export function CrimeRevealView() {
           Evidence is being collected from witness statements...
         </p>
       </Card>
+
+      <PhaseProgressBar
+        progress={progress}
+        label={remaining > 0 ? `Gathering evidence in ${remaining}s...` : 'Preparing evidence board...'}
+      />
     </div>
   );
 }

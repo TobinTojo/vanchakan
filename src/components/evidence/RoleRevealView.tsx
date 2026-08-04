@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
 import { Card } from '@/components/common/Card';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
+import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
 import { useGame } from '@/context/GameContext';
+import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import { getMyRole } from '@/services/gameService';
 import { sounds } from '@/utils/sounds';
 
+const ROLE_REVEAL_SECONDS = 8;
+
 export function RoleRevealView() {
   const { session, myRole, setMyRole } = useGame();
+  const { remaining, progress } = useSyncedGameTimer(ROLE_REVEAL_SECONDS, true);
 
   useEffect(() => {
     if (!session || myRole) return;
@@ -41,6 +46,11 @@ export function RoleRevealView() {
           <p className="text-vanchakan-muted">Revealing your role...</p>
         )}
       </Card>
+
+      <PhaseProgressBar
+        progress={progress}
+        label={remaining > 0 ? `Continuing in ${remaining}s...` : 'Loading next phase...'}
+      />
     </div>
   );
 }

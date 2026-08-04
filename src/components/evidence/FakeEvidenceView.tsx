@@ -3,6 +3,7 @@ import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
+import { PhaseProgressBar } from '@/components/common/PhaseProgressBar';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { useGame } from '@/context/GameContext';
 import { useSyncedGameTimer } from '@/hooks/useGameTimer';
@@ -19,7 +20,7 @@ export function FakeEvidenceView() {
   const [error, setError] = useState<string | null>(null);
   const [checked, setChecked] = useState(false);
 
-  const { remaining } = useSyncedGameTimer(30);
+  const { remaining, progress } = useSyncedGameTimer(30, true);
 
   useEffect(() => {
     if (!session) return;
@@ -55,9 +56,10 @@ export function FakeEvidenceView() {
       <div className="mx-auto max-w-lg animate-fade-in">
         <PhaseHeader phase="Red Herring" title="Stand By" subtitle="Another player is planting false evidence..." />
         <WaitingScreen message="Waiting for the fake evidence to be planted..." />
-        <div className="mt-4 flex justify-center">
-          <GameTimer remaining={remaining} total={30} />
-        </div>
+        <PhaseProgressBar
+          progress={progress}
+          label={remaining > 0 ? `Auto-generating in ${remaining}s if needed...` : 'Building evidence board...'}
+        />
       </div>
     );
   }
