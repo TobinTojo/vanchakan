@@ -33,8 +33,19 @@ export function ResultsView() {
 
   const criminalName = results.criminal_name ?? players.find((p) => p.id === results.criminal_id)?.display_name ?? 'Unknown';
   const accusedName = results.accused_name ?? players.find((p) => p.id === results.accused_id)?.display_name ?? 'Unknown';
+  const jesterName = results.jester_name ?? players.find((p) => p.id === results.jester_id)?.display_name;
   const fakeWriterName = results.fake_writer_name ?? players.find((p) => p.id === results.fake_writer_id)?.display_name;
-  const detectivesWin = results.criminal_id === results.accused_id;
+
+  const jesterWins = results.winning_side === 'jester';
+  const detectivesWin = results.winning_side === 'detectives';
+
+  const headerTitle = jesterWins
+    ? 'The Jester wins alone!'
+    : detectivesWin
+      ? 'The Vanchakan has been caught!'
+      : 'The Vanchakan escaped!';
+
+  const resultImage = jesterWins ? ART.roleJester : detectivesWin ? ART.win : ART.loss;
 
   const handlePlayAgain = async () => {
     if (!session) return;
@@ -60,35 +71,59 @@ export function ResultsView() {
 
   return (
     <div className="mx-auto max-w-2xl animate-fade-in">
-      <PhaseHeader
-        phase="Final Reveal"
-        title={detectivesWin ? 'The Vanchakan has been caught!' : 'The Vanchakan escaped!'}
-      />
+      <PhaseHeader phase="Final Reveal" title={headerTitle} />
 
       <Card glow className="mb-6 text-center animate-reveal">
         <div className="mb-4 flex justify-center">
           <img
-            src={detectivesWin ? ART.win : ART.loss}
+            src={resultImage}
             alt=""
             className="h-32 w-32 rounded-2xl object-cover ring-2 ring-white/10 sm:h-36 sm:w-36"
           />
         </div>
         <div className="space-y-3">
-          <p className="text-lg text-white">
-            The group voted to accuse{' '}
-            <strong className="text-vanchakan-gold">{accusedName}</strong>
-          </p>
-          <p className="text-xl text-white">
-            The real Vanchakan was{' '}
-            <strong className="text-vanchakan-red">{criminalName}</strong>
-          </p>
-          <p className="text-vanchakan-muted">
-            {detectivesWin
-              ? 'The detectives caught the Vanchakan — you win!'
-              : 'The Vanchakan escaped justice — the criminal wins!'}
-          </p>
+          {jesterWins ? (
+            <>
+              <p className="text-lg text-white">
+                The group voted to accuse{' '}
+                <strong className="text-vanchakan-purple-light">{accusedName}</strong>
+              </p>
+              <p className="text-xl text-white">
+                They were the <strong className="text-vanchakan-purple-light">Jester</strong>
+              </p>
+              <p className="text-vanchakan-muted">
+                The Jester wanted to be caught — only they win. Detectives and Vanchakan both lose.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-lg text-white">
+                The group voted to accuse{' '}
+                <strong className="text-vanchakan-gold">{accusedName}</strong>
+              </p>
+              <p className="text-xl text-white">
+                The real Vanchakan was{' '}
+                <strong className="text-vanchakan-red">{criminalName}</strong>
+              </p>
+              <p className="text-vanchakan-muted">
+                {detectivesWin
+                  ? 'The detectives caught the Vanchakan — you win!'
+                  : 'The Vanchakan escaped justice — the criminal wins!'}
+              </p>
+            </>
+          )}
         </div>
       </Card>
+
+      {jesterName && (
+        <Card className="mb-6 text-center">
+          <p className="text-sm text-vanchakan-muted">
+            The Jester was{' '}
+            <strong className="text-vanchakan-purple-light">{jesterName}</strong>
+            {jesterWins ? ' — mission accomplished.' : '.'}
+          </p>
+        </Card>
+      )}
 
       <Card className="mb-6">
         <h3 className="font-semibold text-vanchakan-gold mb-4">Evidence Summary</h3>

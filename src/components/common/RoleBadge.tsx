@@ -34,6 +34,20 @@ const ROLE_INFO = {
     accent: 'text-vanchakan-red',
     border: 'border-vanchakan-red/50 bg-vanchakan-red/15 text-vanchakan-red',
   },
+  jester: {
+    label: 'Jester',
+    image: ART.roleJester,
+    title: 'You are the Jester',
+    summary: 'Win alone by getting the final vote. Detectives and Vanchakan both lose if you succeed.',
+    tips: [
+      'Answer the survey like anyone else — your answers still become evidence.',
+      'Act suspicious enough to land in suspect talks without making your goal obvious.',
+      'Hope the group accuses you in the final vote, not just the suspect round.',
+      'If you are final accused, you win — nobody else does.',
+    ],
+    accent: 'text-vanchakan-purple-light',
+    border: 'border-vanchakan-purple/50 bg-vanchakan-purple/15 text-vanchakan-purple-light',
+  },
   innocent: {
     label: 'Innocent',
     image: ART.roleInnocent,
@@ -55,9 +69,9 @@ export function RoleBadge() {
   const [open, setOpen] = useState(false);
 
   if (!myRole || !room || !PHASES_WITH_ROLE.has(room.status)) return null;
-  if (myRole !== 'criminal' && myRole !== 'innocent') return null;
+  if (myRole !== 'criminal' && myRole !== 'innocent' && myRole !== 'jester') return null;
 
-  const info = ROLE_INFO[myRole];
+  const info = ROLE_INFO[myRole as keyof typeof ROLE_INFO];
 
   return (
     <>

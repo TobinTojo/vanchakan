@@ -58,6 +58,7 @@ export function formatError(error: unknown): string {
   if (text.includes('INVALID_SESSION')) return 'Session expired. Please leave and rejoin the room.';
   if (text.includes('NOT_HOST')) return 'Only the host can start the game.';
   if (text.includes('NOT_ENOUGH_PLAYERS')) return 'Need at least 3 connected players to start.';
+  if (text.includes('JESTER_REQUIRES_FOUR_PLAYERS')) return 'The Jester role needs at least 4 players.';
   if (text.includes('INVALID_STATE')) return 'The game is not in the lobby. Try leaving and rejoining.';
   if (text.includes('MISSING_QUESTIONS')) return 'Question database not set up. Run seed migration in Supabase.';
   if (text.includes('TIME_EXPIRED')) return 'Time expired for this question.';

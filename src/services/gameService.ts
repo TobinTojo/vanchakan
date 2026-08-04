@@ -75,6 +75,15 @@ export async function startGame(playerId: string, sessionToken: string) {
   if (error) throw error;
 }
 
+export async function setJesterEnabled(playerId: string, sessionToken: string, enabled: boolean) {
+  const { error } = await supabase.rpc('set_jester_enabled', {
+    p_player_id: playerId,
+    p_session_token: sessionToken,
+    p_enabled: enabled,
+  });
+  if (error) throw error;
+}
+
 export async function submitAnswer(playerId: string, sessionToken: string, answerText: string) {
   const { data, error } = await supabase.rpc('submit_answer', {
     p_player_id: playerId,

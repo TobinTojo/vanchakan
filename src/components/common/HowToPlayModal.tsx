@@ -17,7 +17,7 @@ const SLIDES = [
   },
   {
     title: 'Secret roles',
-    body: 'One player is secretly the Vanchakan (the criminal). Everyone else is an innocent detective trying to catch them.',
+    body: 'One player is secretly the Vanchakan (the criminal). Everyone else is an innocent detective. The host can optionally add a Jester — a neutral who wins alone if voted out at the end.',
     icon: '🎭',
   },
   {
@@ -31,8 +31,8 @@ const SLIDES = [
     icon: '🗳️',
   },
   {
-    title: 'Catch the Vanchakan',
-    body: 'Accuse the real Vanchakan and the detectives win. Accuse the wrong person and the criminal escapes!',
+    title: 'Three ways to win',
+    body: 'Catch the Vanchakan and detectives win. Accuse the wrong person and the criminal escapes. If the Jester is enabled and gets the final vote, only the Jester wins — nobody else.',
     icon: '🏆',
   },
 ];

@@ -14,7 +14,7 @@ export type RoomStatus =
   | 'finished';
 
 export type QuestionType = 'multiple_choice' | 'short_answer';
-export type PlayerRole = 'innocent' | 'criminal' | 'unknown';
+export type PlayerRole = 'innocent' | 'criminal' | 'jester' | 'unknown';
 export type LieDetectorAction = 'inspect_evidence' | 'check_answer';
 export type LieDetectorStep =
   | 'vote_evidence'
@@ -35,6 +35,7 @@ export interface Room {
   phase_ends_at: string | null;
   tie_breaker_candidates: string[] | null;
   accused_player_id: string | null;
+  jester_enabled: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -165,7 +166,9 @@ export interface GameResultsData {
   accused_name?: string;
   fake_writer_id: string;
   fake_writer_name?: string;
-  winning_side: 'detectives' | 'criminal';
+  jester_id?: string | null;
+  jester_name?: string | null;
+  winning_side: 'detectives' | 'criminal' | 'jester';
   evidence: Array<{
     order: number;
     text: string;
