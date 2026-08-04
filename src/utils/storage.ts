@@ -61,6 +61,7 @@ export function formatError(error: unknown): string {
   if (text.includes('INVALID_STATE')) return 'The game is not in the lobby. Try leaving and rejoining.';
   if (text.includes('MISSING_QUESTIONS')) return 'Question database not set up. Run seed migration in Supabase.';
   if (text.includes('TIME_EXPIRED')) return 'Time expired for this question.';
+  if (text.includes('ANSWER_TOO_LONG')) return 'Keep your answer to 40 characters or fewer.';
   if (text.includes('INVALID_VOTE')) return 'Invalid vote selection.';
   if (text.includes('NOT_INTERROGATOR')) return 'Only the assigned interrogator can perform this action.';
   if (text.includes('NOT_AUTHORIZED')) return 'Only the interrogator can end this round.';

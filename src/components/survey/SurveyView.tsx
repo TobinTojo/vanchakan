@@ -109,10 +109,11 @@ export function SurveyView() {
               value={selected}
               onChange={(e) => setSelected(e.target.value)}
               placeholder="Type your answer..."
-              maxLength={200}
+              maxLength={40}
               className="w-full rounded-lg border border-vanchakan-border bg-vanchakan-surface px-4 py-3 text-white focus:border-vanchakan-purple focus:outline-none focus:ring-2 focus:ring-vanchakan-purple/30"
               aria-label="Your answer"
             />
+            <p className="text-right text-xs text-vanchakan-muted">{selected.length}/40</p>
             <Button onClick={handleSubmit} disabled={!selected.trim()} loading={loading} className="w-full">
               Submit Answer
             </Button>

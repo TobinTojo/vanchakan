@@ -1,0 +1,882 @@
+[
+  {
+    "id": "university-001",
+    "category": "university",
+    "question": "It is the night before an important exam. What are you most likely doing?",
+    "options": [
+      "Studying seriously and reviewing everything",
+      "Cramming while on a call with friends",
+      "Convincing myself that I already know enough",
+      "Accepting my fate and going to sleep"
+    ]
+  },
+  {
+    "id": "university-002",
+    "category": "university",
+    "question": "What is your usual role in a group project?",
+    "options": [
+      "The organizer who keeps everyone on track",
+      "The person who ends up doing most of the work",
+      "The creative person who comes up with ideas",
+      "The person who becomes active near the deadline"
+    ]
+  },
+  {
+    "id": "university-003",
+    "category": "university",
+    "question": "Your professor moves the deadline back by one week. What do you do?",
+    "options": [
+      "Finish the assignment early anyway",
+      "Tell myself I will start tomorrow",
+      "Completely forget about it until the new deadline",
+      "Use the extra time to make it perfect"
+    ]
+  },
+  {
+    "id": "university-004",
+    "category": "university",
+    "question": "You have an 8:30 a.m. class. What usually happens?",
+    "options": [
+      "I arrive early and prepared",
+      "I arrive exactly on time",
+      "I walk in a few minutes late",
+      "I watch the recording later"
+    ]
+  },
+  {
+    "id": "university-005",
+    "category": "university",
+    "question": "What is your go-to study location?",
+    "options": [
+      "The quietest part of the library",
+      "A busy café",
+      "My bedroom",
+      "Wherever my friends are studying"
+    ]
+  },
+  {
+    "id": "university-006",
+    "category": "university",
+    "question": "During a long lecture, what are you most likely doing?",
+    "options": [
+      "Taking detailed notes",
+      "Checking social media",
+      "Online shopping or browsing random websites",
+      "Fighting to stay awake"
+    ]
+  },
+  {
+    "id": "university-007",
+    "category": "university",
+    "question": "Your professor says the exam will be based on the textbook. What do you do?",
+    "options": [
+      "Read every assigned chapter",
+      "Find an online summary",
+      "Ask someone else what is important",
+      "Hope the lecture slides are enough"
+    ]
+  },
+  {
+    "id": "university-008",
+    "category": "university",
+    "question": "You receive a lower grade than expected. What is your first reaction?",
+    "options": [
+      "Review my mistakes and improve",
+      "Calculate whether I can still pass the course",
+      "Complain about the grading to my friends",
+      "Avoid checking the feedback"
+    ]
+  },
+  {
+    "id": "university-009",
+    "category": "university",
+    "question": "How do you normally choose your university courses?",
+    "options": [
+      "Based on career value",
+      "Based on how interesting they sound",
+      "Based on which professor is teaching",
+      "Based on which course seems easiest"
+    ]
+  },
+  {
+    "id": "university-010",
+    "category": "university",
+    "question": "Your group project is due tonight, but one member has disappeared. What do you do?",
+    "options": [
+      "Complete their section myself",
+      "Message them repeatedly",
+      "Tell the professor immediately",
+      "Submit the project without their part"
+    ]
+  },
+  {
+    "id": "university-011",
+    "category": "university",
+    "question": "What is your relationship with your school email?",
+    "options": [
+      "I check it several times every day",
+      "I check it once a day",
+      "I only check it when I expect something",
+      "Important emails regularly surprise me"
+    ]
+  },
+  {
+    "id": "university-012",
+    "category": "university",
+    "question": "You have a three-hour break between classes. What do you do?",
+    "options": [
+      "Study or finish assignments",
+      "Get food with friends",
+      "Go home if possible",
+      "Find somewhere to nap"
+    ]
+  },
+  {
+    "id": "university-013",
+    "category": "university",
+    "question": "You realize you have an assignment due at midnight. It is currently 9:00 p.m. What happens?",
+    "options": [
+      "I create a plan and work efficiently",
+      "I panic but somehow finish it",
+      "I ask my friends what they did",
+      "I accept the late penalty"
+    ]
+  },
+  {
+    "id": "university-014",
+    "category": "university",
+    "question": "What kind of student are you during class discussions?",
+    "options": [
+      "I participate regularly",
+      "I speak only when I have a strong answer",
+      "I avoid eye contact with the professor",
+      "I hope someone else answers first"
+    ]
+  },
+  {
+    "id": "university-015",
+    "category": "university",
+    "question": "Your class has a presentation worth 30%. How do you feel?",
+    "options": [
+      "Excited because I like presenting",
+      "Nervous, but I will prepare carefully",
+      "Fine as long as it is a group presentation",
+      "Ready to drop the course"
+    ]
+  },
+  {
+    "id": "social-001",
+    "category": "social",
+    "question": "Your friends are making plans in the group chat. What role do you take?",
+    "options": [
+      "I organize the entire plan",
+      "I agree with whatever everyone chooses",
+      "I suggest ideas but avoid organizing",
+      "I respond after the plan is already made"
+    ]
+  },
+  {
+    "id": "social-002",
+    "category": "social",
+    "question": "You arrive at a party where you barely know anyone. What do you do?",
+    "options": [
+      "Introduce myself to new people",
+      "Stay close to the person I came with",
+      "Find the food and snacks",
+      "Consider leaving early"
+    ]
+  },
+  {
+    "id": "social-003",
+    "category": "social",
+    "question": "Your friend says, \"I have something to tell you, but you cannot tell anyone.\" What do you do?",
+    "options": [
+      "Keep it completely private",
+      "Tell only my closest friend",
+      "Ask for permission before telling someone",
+      "Accidentally reveal it later"
+    ]
+  },
+  {
+    "id": "social-004",
+    "category": "social",
+    "question": "Someone cancels plans at the last minute. How do you feel?",
+    "options": [
+      "Disappointed because I was looking forward to it",
+      "Relieved because I wanted to stay home",
+      "Annoyed because I already got ready",
+      "Fine because we can reschedule"
+    ]
+  },
+  {
+    "id": "social-005",
+    "category": "social",
+    "question": "What are you usually like in a group chat?",
+    "options": [
+      "I send most of the messages",
+      "I react to messages but rarely type",
+      "I send memes and disappear",
+      "I read everything without responding"
+    ]
+  },
+  {
+    "id": "social-006",
+    "category": "social",
+    "question": "Your friend posts an embarrassing photo of you. What do you do?",
+    "options": [
+      "Laugh and repost it",
+      "Ask them to delete it",
+      "Post an embarrassing photo of them",
+      "Pretend I did not see it"
+    ]
+  },
+  {
+    "id": "social-007",
+    "category": "social",
+    "question": "Your friend is clearly making a bad decision. What do you do?",
+    "options": [
+      "Tell them honestly",
+      "Support them but share my concerns",
+      "Stay out of it",
+      "Watch the situation unfold"
+    ]
+  },
+  {
+    "id": "social-008",
+    "category": "social",
+    "question": "Your friends cannot decide where to eat. What do you do?",
+    "options": [
+      "Choose a restaurant for everyone",
+      "Suggest several options",
+      "Say I am fine with anything",
+      "Reject every suggestion without offering one"
+    ]
+  },
+  {
+    "id": "social-009",
+    "category": "social",
+    "question": "You see someone you know in public, but they have not noticed you. What do you do?",
+    "options": [
+      "Walk over and say hello",
+      "Wait to see if they notice me",
+      "Send them a message instead",
+      "Quietly avoid being seen"
+    ]
+  },
+  {
+    "id": "social-010",
+    "category": "social",
+    "question": "What type of friend are you during a crisis?",
+    "options": [
+      "The problem solver",
+      "The emotional support person",
+      "The person who uses humour to help",
+      "The person who needs someone to explain what is happening"
+    ]
+  },
+  {
+    "id": "technology-001",
+    "category": "technology",
+    "question": "What is the first thing you usually do after waking up?",
+    "options": [
+      "Check my notifications",
+      "Go back to sleep",
+      "Get out of bed immediately",
+      "Scroll through social media"
+    ]
+  },
+  {
+    "id": "technology-002",
+    "category": "technology",
+    "question": "Your phone battery is at 5% and you are away from home. What do you do?",
+    "options": [
+      "Turn on low-power mode immediately",
+      "Ask everyone for a charger",
+      "Continue using it normally",
+      "Accept that my phone is about to die"
+    ]
+  },
+  {
+    "id": "technology-003",
+    "category": "technology",
+    "question": "You accidentally like an old post while looking through someone's profile. What do you do?",
+    "options": [
+      "Unlike it immediately",
+      "Leave it and act confident",
+      "Block the person temporarily",
+      "Close the app and panic"
+    ]
+  },
+  {
+    "id": "technology-004",
+    "category": "technology",
+    "question": "Which message causes the most stress?",
+    "options": [
+      "\"Can we talk?\"",
+      "\"Your assignment has been graded.\"",
+      "\"Are you awake?\"",
+      "\"I need a favour.\""
+    ]
+  },
+  {
+    "id": "technology-005",
+    "category": "technology",
+    "question": "How many browser tabs do you normally have open?",
+    "options": [
+      "Fewer than five",
+      "Between five and fifteen",
+      "More than fifteen",
+      "So many that I cannot see the titles"
+    ]
+  },
+  {
+    "id": "technology-006",
+    "category": "technology",
+    "question": "Someone sends you a five-minute voice message. What do you do?",
+    "options": [
+      "Listen to the entire thing immediately",
+      "Play it at double speed",
+      "Ask them to summarize it",
+      "Forget to listen to it"
+    ]
+  },
+  {
+    "id": "technology-007",
+    "category": "technology",
+    "question": "What are you most likely to send your friends?",
+    "options": [
+      "Memes",
+      "Short videos",
+      "Voice messages",
+      "Screenshots of conversations"
+    ]
+  },
+  {
+    "id": "technology-008",
+    "category": "technology",
+    "question": "How quickly do you normally respond to messages?",
+    "options": [
+      "Almost immediately",
+      "Within a few hours",
+      "Whenever I have enough social energy",
+      "I respond mentally and forget to type it"
+    ]
+  },
+  {
+    "id": "technology-009",
+    "category": "technology",
+    "question": "Your favourite app stops working for an entire day. What do you do?",
+    "options": [
+      "Find another app",
+      "Keep checking whether it is fixed",
+      "Become strangely productive",
+      "Complain about it to everyone"
+    ]
+  },
+  {
+    "id": "technology-010",
+    "category": "technology",
+    "question": "Your screen-time report appears. How do you react?",
+    "options": [
+      "I am proud of my self-control",
+      "I am slightly concerned",
+      "I immediately close it",
+      "I blame one specific app"
+    ]
+  },
+  {
+    "id": "entertainment-001",
+    "category": "entertainment",
+    "question": "You have a free night with no responsibilities. What do you do?",
+    "options": [
+      "Binge a show or movies",
+      "Play video games",
+      "Go out with friends",
+      "Sleep for most of the night"
+    ]
+  },
+  {
+    "id": "entertainment-002",
+    "category": "entertainment",
+    "question": "Your friends are choosing a game for game night. What do you suggest?",
+    "options": [
+      "A competitive game",
+      "A loud party game",
+      "A cooperative game",
+      "A nostalgic game from childhood"
+    ]
+  },
+  {
+    "id": "entertainment-003",
+    "category": "entertainment",
+    "question": "It is movie night. Which movie are you most excited to watch?",
+    "options": [
+      "A major action movie",
+      "A horror movie",
+      "A comedy everyone can quote",
+      "A nostalgic childhood movie"
+    ]
+  },
+  {
+    "id": "entertainment-004",
+    "category": "entertainment",
+    "question": "Someone spoils the ending of a show you are watching. What do you do?",
+    "options": [
+      "Get genuinely angry",
+      "Pretend it does not bother me",
+      "Avoid that person for the rest of the day",
+      "Forget the spoiler before reaching the ending"
+    ]
+  },
+  {
+    "id": "entertainment-005",
+    "category": "entertainment",
+    "question": "You start a new television series. What usually happens?",
+    "options": [
+      "I watch one episode at a time",
+      "I finish the season in a few days",
+      "I stop halfway through",
+      "I watch recaps instead"
+    ]
+  },
+  {
+    "id": "entertainment-006",
+    "category": "entertainment",
+    "question": "What type of video are you most likely to watch at 2:00 a.m.?",
+    "options": [
+      "A long video essay",
+      "Funny clips",
+      "A conspiracy theory",
+      "A tutorial for something I will never try"
+    ]
+  },
+  {
+    "id": "entertainment-007",
+    "category": "entertainment",
+    "question": "You lose a competitive game because of your teammate. What do you do?",
+    "options": [
+      "Stay calm and move on",
+      "Blame them privately",
+      "Blame them publicly",
+      "Say the game is not that serious"
+    ]
+  },
+  {
+    "id": "entertainment-008",
+    "category": "entertainment",
+    "question": "Your favourite artist announces a concert nearby. What do you do?",
+    "options": [
+      "Buy tickets immediately",
+      "Wait to see who else is going",
+      "Check the price before becoming excited",
+      "Watch concert clips online instead"
+    ]
+  },
+  {
+    "id": "entertainment-009",
+    "category": "entertainment",
+    "question": "What matters most when choosing a new show?",
+    "options": [
+      "The story",
+      "The characters",
+      "Recommendations from friends",
+      "Short clips I saw online"
+    ]
+  },
+  {
+    "id": "entertainment-010",
+    "category": "entertainment",
+    "question": "Which describes your music habits best?",
+    "options": [
+      "I carefully build playlists",
+      "I listen to the same songs repeatedly",
+      "I let an algorithm choose everything",
+      "I constantly search for new music"
+    ]
+  },
+  {
+    "id": "food-001",
+    "category": "food",
+    "question": "You are trying to save money, but your friends suggest ordering food. What do you do?",
+    "options": [
+      "Cook something at home",
+      "Order the cheapest option",
+      "Spend the money and regret it later",
+      "Say I am not hungry, then eat their food"
+    ]
+  },
+  {
+    "id": "food-002",
+    "category": "food",
+    "question": "What happens when you go grocery shopping while hungry?",
+    "options": [
+      "I follow my list carefully",
+      "I buy too many snacks",
+      "I buy ingredients for meals I never make",
+      "I forget the main thing I needed"
+    ]
+  },
+  {
+    "id": "food-003",
+    "category": "food",
+    "question": "Someone asks where you want to eat. What do you say?",
+    "options": [
+      "I choose immediately",
+      "I provide several options",
+      "\"I do not care\"",
+      "\"Anywhere except that one place\""
+    ]
+  },
+  {
+    "id": "food-004",
+    "category": "food",
+    "question": "Your friend asks for one bite of your food. What do you do?",
+    "options": [
+      "Share without hesitation",
+      "Give them a small bite",
+      "Say no",
+      "Offer to buy them their own food"
+    ]
+  },
+  {
+    "id": "food-005",
+    "category": "food",
+    "question": "You receive unexpected money. What is your first move?",
+    "options": [
+      "Save it",
+      "Buy something I have wanted",
+      "Spend it on food or entertainment",
+      "Tell myself I will save it, then slowly spend it"
+    ]
+  },
+  {
+    "id": "food-006",
+    "category": "food",
+    "question": "Which university meal describes you best?",
+    "options": [
+      "A proper meal I prepared",
+      "Food from a campus restaurant",
+      "Instant noodles",
+      "Snacks pretending to be a meal"
+    ]
+  },
+  {
+    "id": "food-007",
+    "category": "food",
+    "question": "You order food and receive the wrong meal. What do you do?",
+    "options": [
+      "Politely ask for the correct order",
+      "Eat it anyway",
+      "Ask for a refund through the app",
+      "Let my friend handle the complaint"
+    ]
+  },
+  {
+    "id": "food-008",
+    "category": "food",
+    "question": "What is your biggest unnecessary expense?",
+    "options": [
+      "Food delivery",
+      "Clothes",
+      "Subscriptions",
+      "Random small purchases"
+    ]
+  },
+  {
+    "id": "food-009",
+    "category": "food",
+    "question": "Your friend says they will pay you back later. What do you do?",
+    "options": [
+      "Trust them and forget about it",
+      "Send a reminder later",
+      "Request the money immediately",
+      "Keep track of every cent"
+    ]
+  },
+  {
+    "id": "food-010",
+    "category": "food",
+    "question": "How do you behave at an all-you-can-eat restaurant?",
+    "options": [
+      "Eat a normal amount",
+      "Try to get my money's worth",
+      "Take too much food",
+      "Focus mostly on dessert"
+    ]
+  },
+  {
+    "id": "personality-001",
+    "category": "personality",
+    "question": "Your alarm goes off in the morning. What do you do?",
+    "options": [
+      "Get up immediately",
+      "Snooze it once",
+      "Snooze it several times",
+      "Turn it off without remembering"
+    ]
+  },
+  {
+    "id": "personality-002",
+    "category": "personality",
+    "question": "Your room becomes messy. When do you clean it?",
+    "options": [
+      "Before it becomes messy",
+      "As soon as I notice",
+      "When someone is coming over",
+      "When I can no longer find anything"
+    ]
+  },
+  {
+    "id": "personality-003",
+    "category": "personality",
+    "question": "You make a small embarrassing mistake in public. What happens next?",
+    "options": [
+      "I laugh at myself",
+      "I pretend nothing happened",
+      "I think about it for the rest of the day",
+      "I remember it randomly for several years"
+    ]
+  },
+  {
+    "id": "personality-004",
+    "category": "personality",
+    "question": "Someone compliments you. How do you respond?",
+    "options": [
+      "Say thank you confidently",
+      "Compliment them back",
+      "Make a joke",
+      "Deny the compliment"
+    ]
+  },
+  {
+    "id": "personality-005",
+    "category": "personality",
+    "question": "You have an important task to complete. How do you begin?",
+    "options": [
+      "Start immediately",
+      "Make a detailed plan first",
+      "Complete several unrelated tasks first",
+      "Wait until the pressure feels real"
+    ]
+  },
+  {
+    "id": "personality-006",
+    "category": "personality",
+    "question": "You have to make a difficult decision. What do you do?",
+    "options": [
+      "Trust my first instinct",
+      "Make a pros-and-cons list",
+      "Ask several people for advice",
+      "Avoid deciding until I have no choice"
+    ]
+  },
+  {
+    "id": "personality-007",
+    "category": "personality",
+    "question": "Someone disagrees with your opinion. What do you do?",
+    "options": [
+      "Have a calm discussion",
+      "Try to change their mind",
+      "Agree to disagree",
+      "Search online to prove I am right"
+    ]
+  },
+  {
+    "id": "personality-008",
+    "category": "personality",
+    "question": "You are running late. What message do you send?",
+    "options": [
+      "\"I am on my way.\"",
+      "\"I will be there in five minutes.\"",
+      "A detailed explanation of what happened",
+      "Nothing until I arrive"
+    ]
+  },
+  {
+    "id": "personality-009",
+    "category": "personality",
+    "question": "You receive instructions for assembling something. What do you do?",
+    "options": [
+      "Read every step carefully",
+      "Look at the pictures",
+      "Try to figure it out myself",
+      "Ask someone else to do it"
+    ]
+  },
+  {
+    "id": "personality-010",
+    "category": "personality",
+    "question": "How do you usually handle awkward silence?",
+    "options": [
+      "Start a new conversation",
+      "Make a joke",
+      "Check my phone",
+      "Let the silence continue"
+    ]
+  },
+  {
+    "id": "dating-001",
+    "category": "dating",
+    "question": "Your crush views your story almost immediately. What do you think?",
+    "options": [
+      "It probably means nothing",
+      "They were waiting for me to post",
+      "The algorithm showed it first",
+      "I start analyzing everything"
+    ]
+  },
+  {
+    "id": "dating-002",
+    "category": "dating",
+    "question": "Someone you like takes several hours to reply. What do you do?",
+    "options": [
+      "Continue with my day",
+      "Match their response time",
+      "Ask my friends what it means",
+      "Check whether they have been active"
+    ]
+  },
+  {
+    "id": "dating-003",
+    "category": "dating",
+    "question": "What is your flirting style?",
+    "options": [
+      "Direct and confident",
+      "Playful teasing",
+      "Sending memes",
+      "Avoiding the person completely"
+    ]
+  },
+  {
+    "id": "dating-004",
+    "category": "dating",
+    "question": "Your friend wants to set you up with someone. What do you do?",
+    "options": [
+      "Agree immediately",
+      "Ask to see their profile first",
+      "Refuse because it sounds awkward",
+      "Investigate the person online"
+    ]
+  },
+  {
+    "id": "dating-005",
+    "category": "dating",
+    "question": "You realize your friend likes the same person as you. What do you do?",
+    "options": [
+      "Talk to my friend honestly",
+      "Step aside",
+      "Continue pursuing the person",
+      "Pretend I never liked them"
+    ]
+  },
+  {
+    "id": "hypothetical-001",
+    "category": "hypothetical",
+    "question": "You suddenly receive a free weekend with no responsibilities. What do you do?",
+    "options": [
+      "Go on a spontaneous trip",
+      "Stay home and recharge",
+      "Make plans with friends",
+      "Start a new hobby or project"
+    ]
+  },
+  {
+    "id": "hypothetical-002",
+    "category": "hypothetical",
+    "question": "You become famous overnight. What is the first thing you do?",
+    "options": [
+      "Hire someone to manage everything",
+      "Read every comment about me",
+      "Help my friends and family",
+      "Disappear from the internet"
+    ]
+  },
+  {
+    "id": "hypothetical-003",
+    "category": "hypothetical",
+    "question": "You can remove one inconvenience from your life forever. Which do you choose?",
+    "options": [
+      "Traffic and commuting",
+      "Waiting in lines",
+      "Slow internet",
+      "Group project problems"
+    ]
+  },
+  {
+    "id": "hypothetical-004",
+    "category": "hypothetical",
+    "question": "You are given one extra hour every day. How do you use it?",
+    "options": [
+      "Sleep",
+      "Study or work",
+      "Exercise",
+      "Watch shows or use social media"
+    ]
+  },
+  {
+    "id": "hypothetical-005",
+    "category": "hypothetical",
+    "question": "You must live without one thing for a month. Which would be easiest?",
+    "options": [
+      "Social media",
+      "Video games",
+      "Streaming services",
+      "Takeout food"
+    ]
+  },
+  {
+    "id": "hypothetical-006",
+    "category": "hypothetical",
+    "question": "You can instantly master one skill. Which do you choose?",
+    "options": [
+      "Speaking every language",
+      "Playing any instrument",
+      "Coding anything",
+      "Becoming extremely confident"
+    ]
+  },
+  {
+    "id": "hypothetical-007",
+    "category": "hypothetical",
+    "question": "You are stuck in an elevator with strangers. What do you do?",
+    "options": [
+      "Start a conversation",
+      "Make jokes about the situation",
+      "Stay completely quiet",
+      "Try to solve the problem myself"
+    ]
+  },
+  {
+    "id": "hypothetical-008",
+    "category": "hypothetical",
+    "question": "You accidentally become the leader of a large club. What do you do?",
+    "options": [
+      "Take the role seriously",
+      "Delegate everything",
+      "Use the position to make fun events",
+      "Look for a way to resign"
+    ]
+  },
+  {
+    "id": "hypothetical-009",
+    "category": "hypothetical",
+    "question": "You can read one person's mind for a day. Who do you choose?",
+    "options": [
+      "My best friend",
+      "My crush",
+      "A professor",
+      "A famous person"
+    ]
+  },
+  {
+    "id": "hypothetical-010",
+    "category": "hypothetical",
+    "question": "You wake up invisible for one day. What do you do?",
+    "options": [
+      "Explore places I normally cannot enter",
+      "Listen to private conversations",
+      "Play harmless pranks",
+      "Stay home because the situation is terrifying"
+    ]
+  }
+]

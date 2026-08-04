@@ -1,0 +1,242 @@
+[
+  {
+    "id": "short-001",
+    "category": "entertainment",
+    "question": "Which celebrity would you most want to meet?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-002",
+    "category": "technology",
+    "question": "What is your most-used app?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-003",
+    "category": "food",
+    "question": "What food could you eat every week?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-004",
+    "category": "entertainment",
+    "question": "What is your current comfort show?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-005",
+    "category": "university",
+    "question": "What is one course you would never take again?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-006",
+    "category": "entertainment",
+    "question": "What fictional character would you trust with your life?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-007",
+    "category": "personality",
+    "question": "What is your most embarrassing habit?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-008",
+    "category": "hypothetical",
+    "question": "What would you buy first if money did not matter?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-009",
+    "category": "hypothetical",
+    "question": "What is your dream vacation destination?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-010",
+    "category": "food",
+    "question": "What is your most controversial food opinion?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-011",
+    "category": "personality",
+    "question": "What skill do you wish you could instantly learn?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-012",
+    "category": "entertainment",
+    "question": "What song have you played too many times?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-013",
+    "category": "personality",
+    "question": "What is the worst excuse you have used for being late?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-014",
+    "category": "technology",
+    "question": "What is one app you could not delete?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-015",
+    "category": "personality",
+    "question": "What is the strangest thing currently in your room?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-016",
+    "category": "food",
+    "question": "What is your go-to late-night meal?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-017",
+    "category": "university",
+    "question": "What is your biggest university regret?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-018",
+    "category": "university",
+    "question": "Which professor would survive a zombie apocalypse?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-019",
+    "category": "university",
+    "question": "What is the worst assignment you have ever received?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-020",
+    "category": "personality",
+    "question": "What is the longest you have procrastinated on something?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-021",
+    "category": "personality",
+    "question": "What is one thing you pretend to understand?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-022",
+    "category": "personality",
+    "question": "What is your most irrational fear?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-023",
+    "category": "entertainment",
+    "question": "What is your go-to karaoke song?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-024",
+    "category": "personality",
+    "question": "What is the weirdest thing you believed as a child?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-025",
+    "category": "food",
+    "question": "What is your most unnecessary purchase?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-026",
+    "category": "social",
+    "question": "What is one trend you do not understand?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-027",
+    "category": "hypothetical",
+    "question": "What is the first thing you would do if you became famous?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-028",
+    "category": "entertainment",
+    "question": "What is a show everyone likes except you?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-029",
+    "category": "personality",
+    "question": "What is one thing that instantly annoys you?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-030",
+    "category": "personality",
+    "question": "What is the worst haircut you have ever had?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-031",
+    "category": "personality",
+    "question": "What would your warning label say?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-032",
+    "category": "personality",
+    "question": "What is your most repeated lie?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-033",
+    "category": "university",
+    "question": "What is the weirdest excuse you have given a professor?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-034",
+    "category": "social",
+    "question": "What is one thing your friends always make fun of you for?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-035",
+    "category": "entertainment",
+    "question": "Which fictional universe would you live in?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-036",
+    "category": "entertainment",
+    "question": "What is the most embarrassing song in your playlist?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-037",
+    "category": "entertainment",
+    "question": "What is your guilty-pleasure television show?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-038",
+    "category": "social",
+    "question": "What is the worst fashion trend?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-039",
+    "category": "personality",
+    "question": "What would you name your autobiography?",
+    "maxLength": 40
+  },
+  {
+    "id": "short-040",
+    "category": "personality",
+    "question": "What is one thing you always lose?",
+    "maxLength": 40
+  }
+]
