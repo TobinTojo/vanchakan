@@ -7,6 +7,7 @@ import type {
   LieDetectorAction,
   LieDetectorAnswerReveal,
   LieDetectorResult,
+  LieDetectorState,
   SuspectVoteResult,
 } from '@/types';
 import { generateSessionToken, isRpcConflict } from '@/utils/storage';
@@ -227,6 +228,14 @@ export async function getSuspectVoteResults(roomId: string): Promise<SuspectVote
   return data as SuspectVoteResult[];
 }
 
+export async function getLieDetectorState(roomId: string): Promise<LieDetectorState | null> {
+  const { data, error } = await supabase.rpc('get_lie_detector_state', {
+    p_room_id: roomId,
+  });
+  if (error) throw error;
+  return data as LieDetectorState | null;
+}
+
 export async function getLieDetectorResult(
   roomId: string,
   eventNumber: number
@@ -391,12 +400,18 @@ export async function hasSubmittedFinalVote(roomId: string, playerId: string, is
   return (count ?? 0) > 0;
 }
 
-export async function hasSubmittedLieDetectorVote(roomId: string, playerId: string, eventNumber: number) {
+export async function hasSubmittedLieDetectorVote(
+  roomId: string,
+  playerId: string,
+  eventNumber: number,
+  votePhase: 'evidence' | 'player'
+) {
   const { count } = await supabase
     .from('lie_detector_votes')
     .select('*', { count: 'exact', head: true })
     .eq('room_id', roomId)
     .eq('player_id', playerId)
-    .eq('event_number', eventNumber);
+    .eq('event_number', eventNumber)
+    .eq('vote_phase', votePhase);
   return (count ?? 0) > 0;
 }

@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
-import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { useGame } from '@/context/GameContext';
-import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import {
   fetchCurrentGameQuestion,
   submitAnswer,
@@ -25,8 +23,6 @@ export function SurveyView() {
   const [answerCount, setAnswerCount] = useState({ answered: 0, total: 0 });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const { remaining } = useSyncedGameTimer(30);
 
   useEffect(() => {
     if (!session || !room) return;
@@ -92,10 +88,6 @@ export function SurveyView() {
         title={`Question ${room.current_question_index} of 8`}
         subtitle="Answer honestly — your responses may become evidence!"
       />
-
-      <div className="mb-6 flex justify-center">
-        <GameTimer remaining={remaining} total={30} />
-      </div>
 
       <Card glow>
         <p className="mb-6 text-lg text-white">{question.question_text}</p>

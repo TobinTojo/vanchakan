@@ -16,6 +16,11 @@ export type RoomStatus =
 export type QuestionType = 'multiple_choice' | 'short_answer';
 export type PlayerRole = 'innocent' | 'criminal' | 'unknown';
 export type LieDetectorAction = 'inspect_evidence' | 'check_answer';
+export type LieDetectorStep =
+  | 'vote_evidence'
+  | 'reveal_evidence'
+  | 'vote_player'
+  | 'reveal_player';
 
 export interface Room {
   id: string;
@@ -26,6 +31,7 @@ export interface Room {
   current_round: number;
   current_crime_id: string | null;
   lie_detector_event: number;
+  lie_detector_step: LieDetectorStep | null;
   phase_ends_at: string | null;
   tie_breaker_candidates: string[] | null;
   accused_player_id: string | null;
@@ -197,6 +203,7 @@ export interface LieDetectorAnswerReveal {
 }
 
 export interface LieDetectorResult {
+  result_phase?: 'evidence' | 'player';
   action_type: LieDetectorAction;
   player_name?: string | null;
   question_text?: string | null;
@@ -204,4 +211,23 @@ export interface LieDetectorResult {
   answer_verdict?: 'honest' | 'dishonest' | null;
   inspection_result?: string | null;
   evidence_order?: number | null;
+  target_evidence_id?: string | null;
+  target_player_id?: string | null;
+}
+
+export interface LieDetectorAttachedPlayer {
+  id: string;
+  name: string;
+  question_id: string;
+  question_text: string;
+}
+
+export interface LieDetectorState {
+  step: LieDetectorStep;
+  event_number: number;
+  phase_ends_at: string | null;
+  evidence_options: Evidence[];
+  evidence_result: LieDetectorResult | null;
+  player_result: LieDetectorResult | null;
+  attached_player: LieDetectorAttachedPlayer | null;
 }
