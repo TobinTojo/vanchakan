@@ -133,17 +133,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const activeSession = session;
     let cancelled = false;
     setLoading(true);
     setError(null);
 
     async function loadRoom() {
       try {
-        const r = await fetchRoom(session.roomId);
+        const r = await fetchRoom(activeSession.roomId);
         if (cancelled) return;
         setRoom(r as Room);
 
-        const p = await fetchPlayers(session.roomId);
+        const p = await fetchPlayers(activeSession.roomId);
         if (cancelled) return;
         setPlayers(p as Player[]);
       } catch (e) {
