@@ -128,10 +128,10 @@ export function InterrogationView() {
         </>
       )}
 
-      {isHost && targetSelected && (
+      {(isHost || isInterrogator) && targetSelected && (
         <div className="mt-6 text-center">
           <Button onClick={handleNextRound} loading={loading}>
-            {room.current_round >= 6 ? 'Proceed to Suspect Vote' : 'Next Round'}
+            {room.current_round >= 6 ? 'Proceed to Suspect Vote' : 'End Round'}
           </Button>
         </div>
       )}

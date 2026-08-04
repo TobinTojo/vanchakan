@@ -10,7 +10,7 @@ import type { GameResultsData } from '@/types';
 import { cn } from '@/utils/storage';
 
 export function ResultsView() {
-  const { session, players, clearGame } = useGame();
+  const { session, players, isHost, clearGame } = useGame();
   const [results, setResults] = useState<GameResultsData | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -123,13 +123,20 @@ export function ResultsView() {
       </Card>
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        <Button onClick={handlePlayAgain} loading={loading} className="flex-1">
-          Play Again
-        </Button>
+        {isHost && (
+          <Button onClick={handlePlayAgain} loading={loading} className="flex-1">
+            Play Again
+          </Button>
+        )}
         <Button variant="secondary" onClick={handleLeave} className="flex-1">
           Leave Room
         </Button>
       </div>
+      {!isHost && (
+        <p className="mt-4 text-center text-sm text-vanchakan-muted">
+          Waiting for the host to start a new game...
+        </p>
+      )}
     </div>
   );
 }

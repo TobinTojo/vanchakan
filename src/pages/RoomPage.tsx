@@ -14,8 +14,7 @@ import { FinalVoteView } from '@/components/voting/FinalVoteView';
 import { ResultsView } from '@/components/results/ResultsView';
 import { WaitingScreen } from '@/components/common/WaitingScreen';
 import { DevPanel } from '@/components/common/DevPanel';
-import { SoundToggle } from '@/components/common/SoundToggle';
-import { RoleBadge } from '@/components/common/RoleBadge';
+import { GameTopBar } from '@/components/common/GameTopBar';
 import { ErrorBanner } from '@/components/common/ErrorBanner';
 import { Button } from '@/components/common/Button';
 
@@ -80,11 +79,8 @@ export function RoomPage() {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-vanchakan-bg px-4 py-8">
-      <RoleBadge />
-      <div className="absolute top-4 right-4">
-        <SoundToggle />
-      </div>
+    <div className="min-h-screen bg-vanchakan-bg px-4 py-4 sm:py-8">
+      <GameTopBar />
       {error && (
         <div className="mx-auto mb-4 max-w-lg">
           <ErrorBanner message={error} />

@@ -4,15 +4,17 @@ import { Card } from '@/components/common/Card';
 import { GameTimer } from '@/components/common/GameTimer';
 import { PhaseHeader } from '@/components/common/PhaseHeader';
 import { PlayerList } from '@/components/common/PlayerList';
+import { cleanQuestionText } from '@/components/evidence/EvidenceCard';
 import { useGame } from '@/context/GameContext';
 import { useSyncedGameTimer } from '@/hooks/useGameTimer';
 import {
   submitLieDetectorVote,
   hasSubmittedLieDetectorVote,
   fetchGameQuestions,
+  getLieDetectorResult,
 } from '@/services/gameService';
 import { formatError } from '@/utils/storage';
-import type { LieDetectorAction } from '@/types';
+import type { LieDetectorAction, LieDetectorResult } from '@/types';
 
 type Step = 'action' | 'evidence' | 'player' | 'question';
 
@@ -23,6 +25,7 @@ export function LieDetectorView() {
   const [targetId, setTargetId] = useState<string | null>(null);
   const [targetQuestionId, setTargetQuestionId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [result, setResult] = useState<LieDetectorResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [questions, setQuestions] = useState<Array<{ id: string; question_text: string }>>([]);
@@ -38,6 +41,19 @@ export function LieDetectorView() {
       );
     });
   }, [session, room]);
+
+  useEffect(() => {
+    if (!session || !room) return;
+
+    const loadResult = () =>
+      getLieDetectorResult(session.roomId, room.lie_detector_event)
+        .then(setResult)
+        .catch(() => {});
+
+    loadResult();
+    const interval = setInterval(loadResult, 2000);
+    return () => clearInterval(interval);
+  }, [session, room?.lie_detector_event, room?.id]);
 
   const handleSubmit = async () => {
     if (!session || !action) return;
@@ -55,6 +71,36 @@ export function LieDetectorView() {
       setLoading(false);
     }
   };
+
+  if (result) {
+    return (
+      <div className="mx-auto max-w-lg animate-fade-in">
+        <PhaseHeader phase="Lie Detector" title="Results" subtitle="The group has spoken" />
+        <Card glow className="mb-6">
+          {result.action_type === 'check_answer' ? (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase text-vanchakan-gold">Answer Revealed</p>
+              <p className="text-white">
+                <strong>{result.player_name}</strong> answered:
+              </p>
+              <p className="text-sm text-vanchakan-muted">
+                {result.question_text ? cleanQuestionText(result.question_text) : 'Survey question'}
+              </p>
+              <p className="text-lg font-semibold text-vanchakan-gold">"{result.answer_text}"</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold uppercase text-vanchakan-gold">Evidence Inspected</p>
+              <p className="text-lg font-semibold text-white">
+                Evidence #{result.evidence_order}: {result.inspection_result}
+              </p>
+            </div>
+          )}
+        </Card>
+        <GameTimer remaining={remaining} total={12} label="Continuing in" />
+      </div>
+    );
+  }
 
   if (submitted) {
     return (

@@ -25,14 +25,14 @@ export function RoleBadge() {
   return (
     <div
       className={cn(
-        'fixed top-4 left-4 z-10 flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold shadow-lg',
+        'flex shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold sm:gap-1.5 sm:px-2.5 sm:text-xs',
         isCriminal
           ? 'border-vanchakan-red/50 bg-vanchakan-red/15 text-vanchakan-red'
           : 'border-vanchakan-gold/50 bg-vanchakan-gold/15 text-vanchakan-gold'
       )}
     >
-      <span>{isCriminal ? '🎭' : '🔍'}</span>
-      <span>{isCriminal ? 'You are the Vanchakan' : 'You are innocent'}</span>
+      <span className="leading-none">{isCriminal ? '🎭' : '🔍'}</span>
+      <span className="leading-none">{isCriminal ? 'Vanchakan' : 'Innocent'}</span>
     </div>
   );
 }

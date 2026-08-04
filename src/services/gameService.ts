@@ -6,6 +6,7 @@ import type {
   GameResultsData,
   LieDetectorAction,
   LieDetectorAnswerReveal,
+  LieDetectorResult,
   SuspectVoteResult,
 } from '@/types';
 import { generateSessionToken, isRpcConflict } from '@/utils/storage';
@@ -224,6 +225,18 @@ export async function getSuspectVoteResults(roomId: string): Promise<SuspectVote
   const { data, error } = await supabase.rpc('get_suspect_vote_results', { p_room_id: roomId });
   if (error) throw error;
   return data as SuspectVoteResult[];
+}
+
+export async function getLieDetectorResult(
+  roomId: string,
+  eventNumber: number
+): Promise<LieDetectorResult | null> {
+  const { data, error } = await supabase.rpc('get_lie_detector_result', {
+    p_room_id: roomId,
+    p_event_number: eventNumber,
+  });
+  if (error) throw error;
+  return data as LieDetectorResult | null;
 }
 
 export async function getLieDetectorAnswer(roomId: string, eventNumber: number): Promise<LieDetectorAnswerReveal | null> {

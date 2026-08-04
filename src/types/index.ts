@@ -192,3 +192,12 @@ export interface LieDetectorAnswerReveal {
   question: string;
   answer: string;
 }
+
+export interface LieDetectorResult {
+  action_type: LieDetectorAction;
+  player_name?: string | null;
+  question_text?: string | null;
+  answer_text?: string | null;
+  inspection_result?: string | null;
+  evidence_order?: number | null;
+}
